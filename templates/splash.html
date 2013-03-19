@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block main %}
+  <p>This is an early DEV preview. Your Feedback is greatly appreciated!</p>
+  <p>BitCoin or bust baby!</p>
+  {% if logged_in %}
+			<p>You are logged in as: {{user.name}}</p>
+			<a href="{{user.link}}" target="_blank">
+				<img src="{{user.avatar_url}}" style="height:60px;width:60px;"/>
+			</a>
+			<a href="/logout" class="button" style="margin-left:35px">logout</a>
+			<a href="/satoshi" class="button" style="margin-left:35px">satoshi web client</a>
+			<br/><br/>
+			<p>Your generous support is greatly appreciated!</p>
+			<form action="https://bitpay.com/checkout" method="post" >
+			  <input type="hidden" name="action" value="checkout" />
+			  <input type="hidden" name="posData" value="" />
+			  &nbsp;&nbsp;BTC<input type="number" name="price" min="0" step="0.01" value=".05" style="width:75px;" /><br/>
+			  <input type="hidden" name="data" value="25hT9oxc8msIYchLigNn4adkVXlpDnvfoHpjVnbPq1NbShFuD3yTml0wc9FV1VQdJ8TrzrviovWxtk7xvLVx5VpSQbT2DKwvD/ZhcWMcl3Hv10vp0nnT0tFFiOtiFpvzWdAmA8IuFD8n+4WpyFSYnDKhHu6V41P2peww3b3LTGGuhWekfZvc63YPEaUiHuosb4Bm8+qto7lpSTtj3m8mLo98f2JzHSJ5Y6r/FObj5PjrZjeaXiz7APKWHNDNBMqz2VFdWDpnDCsLSzE5ZD44JY7jXnIj3NUCPnIakDOj6JMh7R3hCq/sDlSkjgalvfjnKwgFojHEAwlGLcLkAFIPJw==" />
+			  <input type="image" src="https://bitpay.com/img/donate-md.png" border="0" name="submit" alt="BitPay, the easy way to pay with bitcoins." >
+			</form><br/>
+  {% endif %}
+{% endblock %}

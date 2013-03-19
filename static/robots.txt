@@ -1,0 +1,4 @@
+# www.robotstxt.org/
+# www.google.com/
+
+User-agent: *

@@ -1,0 +1,106 @@
+.container:before, .container:after { 
+  content: ""; 
+  display: table; 
+}
+.container:after {
+  clear: both;
+}
+.container {
+  position: relative;
+}
+header, footer, .container { 
+  *zoom: 1; 
+  max-width: 960px;
+  _width: 960px;
+  margin: 0 auto;
+}
+header {
+	margin-bottom:1em;
+}
+
+.app-title {
+  font-size: 46px;
+  color: #6D6E70;
+}
+
+h1 {
+  margin: 1.3em 0 .7em 0;
+}
+
+h2 {
+  margin: .25em 0 .5em 0;
+}
+
+ul.icons li img {
+  padding: 3px;
+  background-color: white;
+  border: 1px solid #efefef;
+}
+/*------------------ some typo styles */
+
+.black, h1 { 
+  color: #111111;
+}
+a, a:visited { 
+  text-decoration: none;
+}
+xa:hover, xa:focus {
+  text-decoration: underline;
+}
+header a:hover, header a:focus {
+  text-decoration: none;
+}
+
+.highlight { 
+  color: #979A02;
+}
+
+.bigger {
+  font-size: 120%;
+}
+.bottom {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+nav ul li {
+  display: inline;
+}
+nav ul li.current {
+  color: black;
+}
+
+ul.bull li:after {
+  content: "\a0\a0\2022\a0";
+}
+ul.bull li:last-child:after {
+  content: "";
+}
+
+
+.avatar {
+  padding: 5px;
+  border: 1px solid #efefef;
+  box-shadow: 0 0 3px #eee;
+  -webkit-box-shadow: 0 0 3px #eee;
+  -moz-box-shadow: 0 0 3px #eee;
+  -o-box-shadow: 0 0 3px #eee;
+  -ms-box-shadow: 0 0 3px #eee;
+}
+
+img.avatar, .avatar img {
+  padding: 0;
+  border: 1px solid #eee;
+}
+
+
+/*------------------- footer */
+
+footer {
+  padding: 5px 0 10px 0;
+  border-top: 1px solid #E4ECF3;
+  /*color: #72D2FF;*/
+  font-size: 80%;
+}
+footer nav:after {
+  clear: both;
+}

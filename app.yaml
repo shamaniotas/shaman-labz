@@ -1,0 +1,104 @@
+application: shaman-labz
+version: 1-5
+runtime: python27
+api_version: 1
+threadsafe: true
+
+# Defaul expiration time. If omitted, the production server sets the expiration
+# to 10 minutes.
+default_expiration: "30d"
+
+# The Python 2.7 runtime includes some additional third-party modules 
+# and makes them available on demand.
+# http://code.google.com/appengine/docs/python/tools/libraries27.html
+#
+# See 'Configuring Libraries' section on
+# http://code.google.com/appengine/docs/python/python27/using27.html
+#
+# When adding jinja2 to your library configuration, you may want to 
+# add markupsafe and setuptools as well. markupsafe improves the performance
+# of template rendering in jinja2 and setuptools is required for some template
+# loading functionality.
+libraries:
+- name: webapp2
+  version: "2.5.1"
+- name: markupsafe
+  version: "0.15"
+- name: setuptools
+  version: "0.6c11"
+- name: jinja2
+  version: "2.6"
+- name: lxml
+  version: '2.3'
+  
+
+handlers:
+#- url: /acss
+#  static_dir: ARC/css
+#- url: /t
+#  static_dir: ARC/t
+#- url: /ajs
+#  static_dir: ARC/js
+#- url: /s
+#  static_dir: ARC/s
+#- url: /sat
+#  static_dir: ARC/sat
+- url: /sounds/mp3
+  static_dir: ARC/sounds/mp3
+  mime_type: audio/mpeg
+- url: /sounds/ogg
+  static_dir: ARC/sounds/ogg
+- url: /voices
+  static_dir: static/voices
+
+
+- url: /(favicon\.ico)
+  mime_type: image/png
+  static_files: static/\1
+  upload: static/favicon\.ico
+
+- url: /(robots\.txt)
+  static_files: static/\1
+  upload: static/robots\.txt
+
+- url: /(img|css)/(.*)
+  static_files: static/\1/\2
+  upload: static/(img|css)/(.*)
+
+- url: /(js)/(.*)
+  static_files: static/\1/\2
+  upload: static/(js)/(.*)
+
+- url: /(dae|models|voices|fonts|obj|scenes|textures)/(.*)
+  static_files: static/\1/\2
+  upload: static/(dae|models|voices|fonts|obj|scenes|textures)/(.*)
+  
+#- url: /(dae)/(.*)
+#  static_files: static/\1/\2
+#  upload: static/(dae)/(.*)
+
+
+- url: /([^\/]*\.html)
+  static_files: static/\1
+  upload: static/.*\.html
+
+# dynamic handlers
+- url: /.*
+  script: main.app
+  secure: always
+
+#- url: /.*
+#  script: helloworld.app
+
+#skip_files:
+#- ^(.*/)?#.*#
+#- ^(.*/)?.*~
+#- ^(.*/)?.*sh
+#- ^(.*/)?.*\.py[co]
+#- ^(.*/)?.*/RCS/.*
+#- ^(.*/)?\..*
+#- ^(.*/)?.*\.bak$
+#- ^(.*/)?.*\.template$
+#- tmp
+#- tests
+

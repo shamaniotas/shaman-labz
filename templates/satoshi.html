@@ -1,0 +1,1102 @@
+{% extends "layout.html" %}
+
+	{% block main %}
+	<!--
+		 /********************************************************
+		 shaman iotas took
+	 	 copyright 2013
+	 	 all rights reserved
+	 	*********************************************************/
+	-->
+	<script src="/js/SHA256.js"></script>
+	<script src="/js/satoshi_client.js"></script>
+	<script src="/js/ntc.js"></script>
+	<script src="/js/technobabble.js"></script>
+	<script src="/js/ancientbeast.js"></script>
+	
+	<script type="text/javascript" src="/js/mespeak.js"></script>
+	<script type="text/javascript">
+	    meSpeak.loadConfig("/js/mespeak_config.json");
+	    meSpeak.loadVoice("/voices/en/en.json");
+	  
+	    function loadVoice(id) {
+	      var fname="voices/"+id+".json";
+	      meSpeak.loadVoice(fname, voiceLoaded);
+	    }
+	  
+	    function voiceLoaded(success, message) {
+	      if (success) {
+	        //alert("Voice loaded: "+message+".");
+	      }
+	      else {
+	        alert("Failed to load a voice: "+message);
+	      }
+	    }
+	
+		var chainedBeasts = [
+			{
+				common_properties:{
+					framerate:30, bgColor:'transparent', spriteWidth:256, 
+					spriteHeight:256, frameCount:24, framestep:1,
+		  			rows:3, columns:8, imageX:0,imageY:0, offset:3
+		  		},
+				spritesheets:[
+			  		{id:0,url:'/img/default.png',default:true}
+				]
+			},
+			{
+				common_properties:{
+					framerate:30, bgColor:'transparent', spriteWidth:256, 
+					spriteHeight:256, frameCount:27, framestep:1,
+		  			rows:4, columns:8, imageX:0,imageY:0, offset:3
+		  		},
+				spritesheets:[
+			  		{id:1,url:'/img/death.png',default:false}
+				]
+			},
+			{
+				common_properties:{
+					framerate:30, bgColor:'transparent', spriteWidth:256, 
+					spriteHeight:256, frameCount:60, framestep:1,
+		  			rows:8, columns:8, imageX:0,imageY:0, offset:3
+		  		},
+				spritesheets:[
+			  		{id:2,url:'/img/idle.png',default:false}
+				]
+			}
+		];
+	</script>
+	
+	<div id="tabs">
+		<ul>
+			<li><a href="#tabs-1">account</a></li>
+			<li><a href="#tabs-2">mining</a></li>
+			<li><a href="#tabs-3">trade</a></li>
+			<li><a href="#tabs-4">profiles</a></li>
+			<li><a href="#tabs-5">applications</a></li>
+			<li><a href="#tabs-6">groups</a></li>
+			<li><a href="#tabs-7">embassy</a></li>
+		</ul>
+		<div id="tabs-1" style="height:400px">
+			<span class="userspan" style="width:50%;float:left;">
+			<!--
+			-----------------------------------------------------------
+				note the use of jinga python template variables here
+			-----------------------------------------------------------
+			-->
+				<p>You are logged in as: <span id='username'>{{user.name}}</span></p>
+				<a href="{{user.link}}" target="_blank">
+					<img src="{{user.avatar_url}}" style="height:60px;width:60px;"/>
+				</a>
+				<a href="/logout" class="button" style="margin-left:10px;">logout</a>
+				<br/>
+				<hr/>
+				<input type="button" id="btn_speak" value="newspeak" class="button"/>
+				<input id="userspeak" type="text" value=""/><br/>
+				<span style="margin-left:128px;font-size:.7em;">leave blank for random msg</span><br/>
+				<span id="technospan" style="margin-right:10px;margin-bottom:10px;margin-top:10px;height:1em;">...</span>
+				<div style="text-align:justify;font-size:.8em;">
+					the mespeak.js library used by this application is stable, but if used to fast/frequently may hang.
+					if this happens, do not freak out :) just wait for the 'stop script' dialog to appear and then cancel 
+					the script. checking 'silent' mode will prevent further errors, allowing you to complete your run,
+					package and then submit to shaman server. however, if used sparingly, the voice is useful in that
+					you can work on another page and still know when you mine a new gem!
+				</div>
+			</span>
+			<span class="prefspan" style="font-size:.8em;width:45%;float:right;text-align:right;border:1px dotted gray;padding:10px;height:90%;overflow:auto;">
+				silent: <input pref="speech" type="checkbox" id="silent"/><br/><br/>
+				amplitude: <input pref="speech" type="text" id="amplitude" size=5 value="25" style="text-align:right;"/><br/>
+	    		pitch: <input pref="speech" type="text" id="pitch" size=5 value="1" style="text-align:right;"/><br/>
+	    		speed: <input pref="speech" type="text" id="speed" size=5 value="225" style="text-align:right;"/><br/>
+	    		word-gap: <input pref="speech" type="text" id="wordgap" size=5 value="0" style="text-align:right;"/><br/>
+	    		welcome-message: <input pref="speech" type="text" id="greetings" size=20 value="Greetings" style="text-align:right;"/><br/>
+				Voice: <select class="ui-corner-all" pref="speech" id="lang" onchange="loadVoice(this.options[this.selectedIndex].value);">
+			    	<option value="ca">ca - catalan</option>
+					<option value="cs">cs - czech</option>
+					<option value="de">de - german</option>
+					<option value="el">el - greek</option>
+					<option value="en/en" selected="selected">en - english</option>
+					<option value="en/en-n">en-n - English, regional</option>
+					<option value="en/en-rp">en-rp - English, regional</option>
+					<option value="en/en-sc">en-sc - English, scottish</option>
+					<option value="en/en-us">en-us - English, us vs. them</option>
+					<option value="en/en-wm">en-wm - English, regional</option>
+					<option value="eo">eo - esperanto</option>
+					<option value="es">es - spanish</option>
+					<option value="es-la">es-la - spanish, latin america</option>
+					<option value="fi">fi - finnish</option>
+					<option value="fr">fr - french</option>
+					<option value="hu">hu - hungarian</option>
+					<option value="it">it - italian</option>
+					<option value="kn">kn - kannada</option>
+					<option value="la">la - latin</option>
+					<option value="lv">lv - latvian</option>
+					<option value="nl">nl - dutch</option>
+					<option value="pl">pl - polish</option>
+					<option value="pt">pt - portuguese, brazil</option>
+					<option value="pt-pt">pt-pt - portuguese, european</option>
+					<option value="ro">ro - romanian</option>
+					<option value="sk">sk - slovak</option>
+					<option value="sv">sv - swedish</option>
+					<option value="tr">tr - turkish</option>
+				</select>
+				<br/>
+				<hr/>
+				*autopkg: <input pref="satoshi" type="checkbox" id="autoPackage" checked="true" style="margin-right:10px;"/>
+				*autorestart: <input pref="satoshi" type="checkbox" id="autoRestart" checked="true"/>
+				autosubmit: <input pref="satoshi" type="checkbox" id="autoSubmit" checked="false" style="margin-right:10px;"/><br/>
+
+				mani-passthrough: <input pref="satoshi" type="checkbox" id="maniPassThrough" checked="true" style="margin-right:10px;"/>
+				passthrough-log-level: <input pref="satoshi" type="text" id="passThroughLogLevel" size=5 value="10" style="text-align:right;"><br/>
+				
+				debug-messages: <input pref="satoshi" type="checkbox" id="debug" checked="true" style="margin-right:10px;"/>
+				debug-level: <input pref="satoshi" type="text" id="debugLevel" size=5 value="9" style="text-align:right;"><br/>
+				
+				auto-package-size (bytes): <input pref="satoshi" type="text" id="maxSize" size=7 value=100000 style="text-align:right;"><br/><br/>	
+				<!--input type="button" id="btn_saveprefs" value="Save Changes" class="button"/-->
+				
+			</span>
+			<!--
+			-----------------------------------------------------------
+				note the use of jinga python template variables here
+				but commented out for now (don't want showing in markup)
+				leaving as example, however for those reviewing source-code
+			-----------------------------------------------------------
+			-->
+			<!--
+			<table style="font-size:.5em;">
+				<tbody>
+				    <tr>
+				    	<td>[AUTH_ID] </td><td>x{x{ xuser.auth_ids[0] x}x}x</td>
+				    </tr>
+				    <tr>
+				    	<td>[USER_ID]  </td><td>x{x{x session.user_idx }x}x</td>
+				    </tr>
+				    <tr>
+				    	<td>[user] </td><td>x{x{xuserx}x}x</td>
+				    </tr>
+				    <tr>
+				    	<td>[session] </td><td>x{x{xsessionx}x}x</td>
+				    </tr>
+				</tbody>
+		    </table>
+		    -->
+		</div>
+		<div id="tabs-2" style="height:400px;xfont-size:.8em;">
+
+			<div id="vtabs2">
+				<ul>
+					<li><a href="#vtabs2-1">satoshi worker</a></li>
+					<li><a href="#vtabs2-2">queued packages</a></li>
+					<li><a href="#vtabs2-3">saved packages</a></li>
+					<li><a href="#vtabs2-4">deleted packages</a></li>
+				</ul> 
+				<div id="vtabs2-1">
+					<div id="mining_controls" class="q_header" style="">
+						updated:    <span bind="lastupdate" class="ui-widget-content ui-state-highlight" style="border-right:1px gray dotted;padding-right:5px;">12/21/2012 23:59:59</span>
+						runtime:    <span bind="runtime" class="ui-widget-content ui-state-highlight" style=";">99:99:99</span> (hh:mm:ss)<br/>
+						total-work: <span bind="mops" class="ui-widget-content ui-state-highlight" style=";">999.9</span> Million Operations (Mops)<br/>
+						speed:      <span bind="avgkopsec" class="ui-widget-content ui-state-highlight" style=";">9.9</span>
+						<span style=";padding-right:5px;">Thousand Operations per Second (Kops/sec)</span><br/>
+						
+						yield: <span id="statusdiv" class="ui-widget-content ui-state-highlight" style="text-align:left;overflow:none;xborder-left:1px gray dotted;">Satoshi was a prophet and Iotas is his Shaman</span>
+					</div>
+					<div id="cq_body" class="q_body" style="">
+						<span id="mqitems_spancan" class="qitems_spancan" style="">
+						</span>						
+					</div>
+					<div id="mq_footer" class="q_footer" style="">
+						<input type="button" id="btn_start" value="start mining" class="button"/>
+				  		<input type="button" id="btn_stop" value="stop mining" class="button" style=""/>
+				  		<input type="button" id="btn_package" value="package & queue" class="button" style=""/>
+				  		<span class="q_progress" style=""><div id="maniprogressbar"></div></span>
+					</div>
+				</div>
+				<div id="vtabs2-2">
+					<div id="cq_header" class="q_header" style="">
+						<span id="cq_info" class="q_info" style="">
+							queued packages:0<br/>
+							total size:0
+						</span>
+						<span id="cq_spancan" class="q_spancan" style="">
+							 no packages queued on client. get mining!
+						</span>
+					</div>
+					<div id="cq_body" class="q_body" style="">
+						<span id="cqb_info" class="q_info" style="">
+						</span>
+						<span id="cqitems_spancan" class="qitems_spancan" style="">
+							 no packages selected  
+						</span>						
+					</div>
+					<div id="cq_footer" class="q_footer" style="">
+						<input type="button" id="btn_commit" value="commit oldest as is" class="button" style=""/>
+						<input type="button" id="btn_commitselected" value="commit selected" class="button"/>
+						<input type="button" id="btn_deleteselected" value="*delete selected" class="button"/>
+						<div id="result" style="height:250px;overflow:auto;display:none;visibility:hidden;"></div>
+					</div>
+				</div>
+				<div id="vtabs2-3">
+					<div id="sq_header" class="q_header" style="">
+						<span id="sq_info" class="q_info" style="">
+							saved packages:0<br/>
+							total estimate:0
+						</span>
+						<span id="sq_spancan" class="q_spancan" style="">
+							  no saved packages
+						</span>
+					</div>
+					<div id="sq_body" class="q_body" style="">
+						<span id="sqitems_spancan" class="qitems_spancan" style="">
+							 
+						</span>						
+					</div>
+					<div id="sq_footer" class="q_footer" style="">
+						<!--input type="button" onclick="alert('not implemented : no soup for you!');" id="btn_restore" value="restore selected" class="button" style=""/-->
+					</div>
+				</div>
+				<div id="vtabs2-4">
+					<div id="dq_header" class="q_header" style="">
+						<span id="dq_info" class="q_info" style="">
+						</span>
+						<span id="dq_spancan" class="q_spancan" style="">
+						</span>
+					</div>
+					<div id="dq_body" class="q_body" style="">
+						<span id="dqitems_spancan" class="qitems_spancan" style="">
+						</span>
+					</div>
+					<div id="dq_footer" class="q_footer" style="">
+						<input type="button" onclick="alert('not implemented');" id="btn_restore" value="refresh" class="button" style=""/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="tabs-3" style="height:400px;overflow:auto;">
+			<div id="vtabs3">
+				<ul>
+					<li><a href="#vtabs3-1">gems / items</a></li>
+					<li><a href="#vtabs3-2">bounties / rewards</a></li>
+					<li><a href="#vtabs3-3">live auctions</a></li>
+					<li><a href="#vtabs3-4">user offerings</a></li>
+					<li><a href="#vtabs3-5">bookie booth</a></li>
+					<li><a href="#vtabs3-6">all transactions</a></li>
+				</ul> 
+				<div id="vtabs3-1">
+					<h2>gem detail</h2>
+					<p>From this tab, users will be able to view existing private inventory and share with friends or make public.</p>
+					<p>Users will also be able to browse friends' shared profiles in trade mode, as well as to search public profiles and inventories.</p>
+					<p>Additionally, from this tab users will be able to send and request gifts and simple exchanges (with chat)</p>
+				</div>
+				<div id="vtabs3-2">
+					<h2>bounties</h2>
+					<p>This module allows users to post Bounties for various crowdsourced requests. One common use-case would be to answer simple questions and award bounties for the best answer.</p>
+					<p>Ultimately, any users contributing toward answering questions would be able to rank answers by sending gifts or satoshi (copper, gold, silver, etc)</p>
+					<p>This functionality will allow users to see how many are already contributing toward a bounty, as well as to be able to add to a bounty. There are many more use-cases, will develop over time.</p>
+				</div>
+				<div id="vtabs3-3">
+					<h2>auctions</h2>
+					<p>Users can put items up for auction, as well as bid on items. These items may be virtual or real.</p>
+					<p>For virtual items, users bid in satoshi or with other virtual items. Several auction types supported, including reverse auctions, etc.</p>
+					<p>For real items, users 'purchase' bids using satoshi and the auctioneer decides form of payment.</p>
+					<p>Note that the system supports user->user payments through various providers, as well as using satoshi or BTC.</p>
+				</div>
+				<div id="vtabs3-4">
+					<h2>services</h2>
+					<p>This tab allows users to offer services, organized into various categories and user tags.</p>
+					<p>Again, because the service helps facilitate user->user payments and transactions, service providers can offer services in specific payment types. Alternately, users can search for service providers offering services for a specific currency.</p>
+					<p>Satoshi is used to 'rank' providers, as well as to compensate for services.</p>
+				</div>
+				<div id="vtabs3-5">
+					<h2>bets</h2>
+					<p>From this tab, users will be able to provide public and private bets. Ultimately, private bets are based purely upon the honor system, but users are able to 'rank' bets with one another's honor using satoshi.</p>
+					<p>Public bets are public, and though still based upon the honor system, are also open for public scrutiny/exhibition. Bets between individual parties are only supported in virtual currencies (e.g. BTC, LC, Satoshi, etc).</p>
+				</div>
+				<div id="vtabs3-6">
+					<h2>transactions</h2>
+					<p>This will list all user transactions, into and out of users' accounts. Users will be able to filter transactions as well as to purge certain history.</p>
+					<p></p>
+				</div>
+			</div>
+		</div>
+		<div id="tabs-4" style="height:400px;overflow:auto;">
+			<p>From this tab, users can manage collections of named profiles. Profiles can be traded.</p>
+		</div>
+		<div id="tabs-5" style="height:400px;overflow:auto;">
+			<p>For normal users, this tab allows users to control which application subscriptions they want to maintain.</p>
+			<p>Development collaborators are able to manage application settings and keys from this tab, as well as establish distribution percentages among collaborator accounts.</p>
+		</div>
+		<div id="tabs-6" style="height:400px;overflow:auto;">
+			<h2>Groups</h2>
+			<p></p>
+		</div>
+		<div id="tabs-7" style="height:400px;overflow:auto;">
+			<h2>Embassy</h2>
+			<p>Here is where users interract with gateways to realm domains, as well as foreign embassies</p>
+		</div>
+	</div>
+	
+	
+	<script>
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		JQUERY INITIALIZE UI WRAPPER FUNCTION
+	//
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	$(function() { /********* INITIALIZE START ********/
+		
+		//setup satoshi preferences from cookie if exists, otherwise from defaults
+		$(function(){
+			var satcv = getCookie('satoshi');
+			if(typeof(satcv) !== "undefined"){
+				var satoshiprefs = JSON.parse(satcv);
+				satoshi.setPreferences(satoshiprefs);
+				$("#maniprogressbar").progressbar("option", "max", satoshi._preferences.maxSize);
+				for(var propt in satoshiprefs){
+					var pn = "#" + propt;
+					var pnobj = $(pn);
+					if( $(pn).is(":checkbox") ){
+						$("#"+propt).prop("checked",satoshiprefs[propt]);
+					}
+					else if( $(pn).is(":text") ){
+						$("#"+propt).val(satoshiprefs[propt]);
+					}
+				}
+	        }
+		});
+
+	  	//initialize the greetings from valus in inputs:
+	  	//greetings from userprefs cookie 
+	  	//and username from shaman server { { user . name } }
+		
+
+		//next setup speech preferences from cookie if it exists
+		$(function(){
+			var usn = $(username).text();
+			var wlcm = $(greetings).val(); 
+			var spcv = getCookie('speech');
+			if(typeof(spcv)!=='undefined'){
+				var sprefs = JSON.parse(spcv);
+				$(silent).prop('checked', sprefs.silent);
+				$(amplitude).val(sprefs.amplitude);
+				$(pitch).val(sprefs.pitch);
+				$(speed).val(sprefs.speed);
+				$(wordgap).val(sprefs.wordgap);
+				$(greetings).val(sprefs.greetings);
+				wlcm = sprefs.greetings;
+			}
+			newspeak(wlcm + ' ' + usn,false,true);
+		});
+		
+		//now setup speech preferences handler 
+		//to auto-store any changes going forward
+		$('input[pref="speech"]').change(
+			function(evt){
+				var speechprefs = {
+					silent:silent.checked,
+					amplitude:parseInt(amplitude.value),
+					pitch:parseInt(pitch.value),
+					speed:parseInt(speed.value),
+					wordgap:parseInt(wordgap.value),
+					greetings:$(greetings).val()
+				};
+				var scv = JSON.stringify(speechprefs);
+				setCookie('speech',scv,30);
+			}
+		);
+		
+		//setup preferences change handler to 
+		//update and store satoshi preferences
+		//////////////////////////
+		   ///NOTE: This sets satoshi preferences from cookie
+		$('input[pref="satoshi"]').change(
+			function(evt){
+				if(autoPackage.checked==false){
+					autoRestart.checked=false;
+				}
+				var satoshiprefs = {
+			    	maxSize:maxSize.value,
+			    	autoPackage:autoPackage.checked,
+			    	autoSubmit:autoSubmit.checked,
+			    	autoRestart:autoRestart.checked,
+			    	altProfile:0,
+			    	debug:debug.checked,
+			    	debugLevel:debugLevel.value,
+			    	maniPassThrough:maniPassThrough.checked,
+			    	passThroughLogLevel:passThroughLogLevel.value,
+				};
+				var satcv = JSON.stringify(satoshiprefs);
+				setCookie('satoshi',satcv,30);
+				satoshi.setPreferences(satoshiprefs);
+				$("#maniprogressbar").progressbar("option", "max", satoshi._preferences.maxSize );
+			}
+		);
+		
+		//setup all the tabs
+		$( "#tabs" ).tabs();
+			//$( "#tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+			//$( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+		$( "#vtabs2" ).tabs();
+			$( "#vtabs2" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+			$( "#vtabs2 li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+		$( "#vtabs3" ).tabs();
+			$( "#vtabs3" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+			$( "#vtabs3 li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+		
+		//initialize progressbar
+		$("#maniprogressbar").progressbar({value:satoshi._preferences.maxSize/2, max:satoshi._preferences.maxSize });
+		
+		//setup buttons initial states (for mining tab)
+		$('#btn_stop').hide();
+		$('#btn_start').show();
+		$('#btn_package').hide();
+		$('input[type=text]').addClass('ui-corner-all');
+		
+		/////////////////////////////////////////////////////
+		//now setup all the buttons handlers
+		/////////////////////////////////////////////////////
+		
+		/////////////////////
+		//mining start
+		/////////////////////
+		$(btn_start).click(
+			function(e){
+			 	if(typeof(Worker)!=="undefined"){  			
+		  			if(typeof(satoshi.worker)=="undefined"){
+		    			newspeak('by your command',false);
+		    			satoshi.start();
+			 			$('#btn_stop').show();
+						$('#btn_start').hide();
+						$('#btn_package').hide();
+		    			statusdiv.innerHTML = "worker started...waiting first callback";
+		 				//dump("main: new worker 'thread'");
+	
+		    		}
+		    		else{
+		    			newspeak('worker still running',true);
+		    		}
+		    	}
+				else {
+					newspeak('get a real browser',true);
+				}
+		    }
+		);
+	    
+	    /////////////////////
+		//mining stop
+		/////////////////////
+	    $(btn_stop).click(
+	 		function(e){
+		 		// MC.pauseit();
+		  		if(typeof(satoshi.worker)!=="undefined"){
+		 			newspeak('mining stopped.',false);
+		 			satoshi.stop();
+		 			$('#btn_stop').hide();
+					$('#btn_start').show();
+					$('#btn_package').show();
+		 			//dump('main: worker terminated');
+		 			display2DGemBox(satoshi.newmanifest[satoshi.newmanifest.length-1],mqitems_spancan);
+		 			statusdiv.innerHTML = "~WORKER TERMINATED~ " + statusdiv.innerHTML;
+		 		}
+		 		else {
+		 			//dump("main: worker not running");
+		 		}
+		 	}
+		);
+	 	/////////////////////
+		//package manifest
+		/////////////////////
+		$(btn_package).click(
+	 		function(e){
+		 		if(satoshi._status.state == 'idle' & satoshi.newmanifest.length > 1){
+		 			satoshi.package();
+		 			var pc = satoshi.packages.length;
+		 			var msg = 'package in queue';
+		 			if(pc==1){
+		 				msg='1 package in queue';
+		 			}
+		 			else{
+		 				msg=pc.toString() + ' packages in queue';
+		 			}
+		 			if(satoshi.packages.length==1){
+		 				$(cq_spancan).empty();
+		 			}
+		 			//dumpPackage(cq_spancan,cqitems_spancan, satoshi.packages[satoshi.packages.length-1]);
+		 			refreshQueuedPackages();
+		 			newspeak(msg,false);
+		 			$('#mqitems_spancan').empty();
+		 			$('#btn_stop').hide();
+					$('#btn_start').show();
+					$('#btn_package').hide();
+					$('#maniprogressbar').progressbar("value",1);
+		 		}
+		 	}
+		);
+	 	////////////////////////
+		//commit oldest package
+		////////////////////////
+		$(btn_commit).click(
+	 		function(e){
+		 		if(satoshi.packages.length>0){
+		 			newspeak('submitting package to shaman',false);
+		 			satoshi.commit();
+		 		}
+		 		else{
+		 			newspeak('no packages to commit',true);
+		 		}	 		
+	 		}
+	 	);
+	 	/////////////////////
+		//delete selected package
+		/////////////////////
+		$(btn_deleteselected).click(
+	 		function(e){
+		 		if($("#cq_spancan .ui-state-active").length){
+		 			var pkgidx = $("#cq_spancan .ui-state-active").index()
+		 			var msg = 'deleted package index ' + pkgidx.toFixed(0) + " ... ";
+		 			satoshi.deleteQueuedPackage(pkgidx);
+		 			refreshQueuedPackages();
+		 			refreshDeletedPackages();
+		 			if(satoshi.packages.length == 1){
+		 				msg = msg + satoshi.packages.length.toString() + ' package left in queue';
+		 			}
+		 			else{
+		 				msg = msg + satoshi.packages.length.toString() + ' packages left in queue';
+		 			}
+		 			
+			    	newspeak(msg,false);		 			
+		 		}
+		 		else{
+		 			newspeak('no package selected',true);
+		 		}	 			
+	 		}
+	 	);
+		//////////////////////////
+		//commmit selected package
+		//////////////////////////
+		$(btn_commitselected).click(
+			function(e){
+		 		if($("#cq_spancan .ui-state-active").length){
+		 			var pkgidx = $("#cq_spancan .ui-state-active").index();
+		 			newspeak('submitting package to shaman',false);
+		 			satoshi.commit(pkgidx);
+		 		}
+		 		else{
+		 			newspeak('no package selected',true);
+		 		}
+			}
+		);
+		/////////////////////
+		//newspeak click
+		/////////////////////
+		$(btn_speak).click(
+			function(e){
+		 		var msg = $(userspeak).val() || SpeakTechnoBaby();
+		 		//note this overrides default silent setting in userprefs
+		 		newspeak(msg,false,true);
+		 		$(technospan).text(msg);
+			}
+		);
+	}); /*********JQUERY UI INITIALIZE END ********/
+	/*********************************************************************************************************/
+	</script>
+
+
+  	<script language="javascript">	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		SATOSHI CLIENT INIT / HOOKS
+	//
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 	//VERY LITTLE REQUIRED TO GET SATOSHI UP AND RUNNING
+ 	    //note satoshi namespace is static object, not instantiated with new
+ 	
+ 	//shaman finds this useful to do, just to give abstraction layer
+ 	//more loosely coupled, the better
+    var satoshi= satoshiClient;
+    //set onmessage handler is necessary to set for callbacks
+    //yes, i know i should use addevent, but i'm too 
+    //lazy to connect up official events from satoshiclient
+    //plus with iClient we need to funnel messages anyway
+    satoshi.init({'prefs':'default'}, manihandler);
+       //note that prefs were already set in jquery ui initialize
+
+    /////////////////////////////////////////////////////////
+    //satoshiClient message handler
+    /////////////////////////////////////////////////////////
+    function manihandler(data){ //start message handler
+    	updatestatus();
+    	//only display first manifest in run
+    	if(data.cmd == 'm' && data.proofs[1].m==0){
+    		newspeak('manifest start',false);
+    		display2DGemBox(data,mqitems_spancan);
+    	}
+    	//if this is 'common' gem, handle
+    	else if(data.cmd=='c'){
+    		switch(data.rar){
+    			case 1:
+    				newspeak('copperweight',false);
+    				//runanim();
+    				break;
+    			case 2:
+    				newspeak('silverweight',false);
+    				//runanim();
+    				runanim(); //just for fun
+    				break;
+    			case 3:
+    				newspeak('goldenweight',false);
+    				//runanim();
+    				runanim(); //double the alien
+    				runanim(); //double the fun
+    				break;
+    		}
+    		display2DGemBox(data,mqitems_spancan);
+    	}
+    	//if 'rare' yottagem then handle
+    	else if(data.cmd=='r'){
+    		newspeak('YottaGem');
+    		display2DGemBox(data,mqitems_spancan);
+    		runanim(); //oh
+    		runanim(); //my
+    		runanim(); //god
+    		runanim();  //aliens
+    		runanim();  //attack!
+    		//runanim();
+    	}
+    	else if(data.cmd=='autopackagecomplete'){
+ 			$('#mqitems_spancan').empty();
+ 			$('#btn_stop').hide();
+			$('#btn_start').show();
+			$('#btn_package').hide();	 			
+    		var pc = satoshi.packages.length;
+    		var msg = 'autopackage completed. ';
+    		if(pc==0){
+    			msg = msg + pc.toString() + ' packages in queue';
+    		}
+    		else if(pc>1){
+    			msg = msg + pc.toString() + ' packages in queue';
+    		}
+    		else{
+    			msg = msg + ' 1 package in queue';
+    		}	 			
+ 			refreshQueuedPackages();
+ 			newspeak(msg,false);
+    	}
+    	else if(data.cmd=='autocommitcomplete'){
+ 			$('#btn_stop').hide();
+			$('#btn_start').show();
+			$('#btn_package').hide();
+    	}
+    	else if(data.cmd=='commitfail'){
+    		var pid = data.pkg.id.toString();
+    		var msg = 'shaman error code: ' + data.returned.s;
+    		if(data.returned.s == 409){
+    			msg = 'shaman data error: ' + data.returned.rt.msg;	
+    		}
+    		else if(data.returned.s == 401){
+    			msg = 'shaman auth error: ' + data.returned.rt.msg;
+    		}
+    		refreshQueuedPackages();
+    		newspeak(msg,false);
+    	}
+    	else if(data.cmd=='commitsuccess'){
+    		var pc = satoshi.packages.length;
+    		var msg = 'shaman accepted new package... ';
+    		if(pc==0){
+    			msg = msg + pc.toString() + ' packages in queue';
+    		}
+    		else if(pc>1){
+    			msg = msg + pc.toString() + ' packages in queue';
+    		}
+    		else{
+    			msg = msg + ' 1 package in queue';
+    		}
+    		refreshQueuedPackages();
+    		refreshServerPackages();
+    		newspeak(msg,false);
+    	}
+    	else if(data.cmd=='autorestart'){
+    		newspeak('autorestart engaged');
+ 			$('#btn_stop').show();
+			$('#btn_start').hide();
+			$('#btn_package').hide();		
+    	}
+    	else if(data.cmd=='stopped'){
+ 			$('#btn_stop').hide();
+			$('#btn_start').show();
+			$('#btn_package').show();
+    	}
+    } // end satoshiClient message-handler callback
+	/*********************************************************************************************************/
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		GENERAL UI FUNCTIONS
+	//
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	    function updatestatus(){ //UI function to display what has been mined
+	    	var stat = satoshi._status;
+	    	var sstr = "[mana" + ":" + stat.common[0].count + "] "
+	    			+ "[" + stat.common[1].name + "(" + stat.common[1].count + "):" + stat.common[1].melt + "] "
+	    			+ " [" + stat.common[2].name + "(" + stat.common[2].count + "):" + stat.common[2].melt + "] "
+	    			+ " [" + stat.common[3].name + "(" + stat.common[3].count + "):" + stat.common[3].melt + "] "
+	    			+ " [" + stat.rare[0].name + ":" + stat.rare[0].count + "]";
+	    	statusdiv.innerHTML = sstr;
+	    	for(k in satoshi._status){
+	    		$('[bind='+k+']').text(satoshi._status[k]);
+	    	}
+	    	
+	    	//var pct = Math.round(satoshi._preferences.maxSize / (JSON.stringify(satoshi.newmanifest).length||1));
+	    	//$( "#maniprogressbar" ).progressbar("option", "value", pct);
+	    	var size = JSON.stringify(satoshi.newmanifest).length;
+	    	$( "#maniprogressbar" ).progressbar("value", size);
+	    }
+
+		function refreshDeletedPackages(){
+			var do_not_ignore_keep  = false;
+			refreshPackageList(satoshi.deletedPackages, dq_spancan, dqitems_spancan, do_not_ignore_keep);
+		}
+		function refreshServerPackages(){
+			var ignore_gembox_keep = ignore_keep = true;
+			refreshPackageList(satoshi.submittedPackages, sq_spancan, sqitems_spancan, ignore_keep);
+		}
+	    function refreshQueuedPackages(){
+	    	var  do_not_ignore_keep = false;
+	    	refreshPackageList(satoshi.packages, cq_spancan, cqitems_spancan, do_not_ignore_keep);
+	    }
+		function refreshPackageList(pkgs,can,ican,ignore_keep){
+	    	if(pkgs.length){
+		    	var pl = new packageList(pkgs);
+		    	pl.dumpAllPackages(can,ican,ignore_keep);
+	    	}
+	    	else{
+	    		$(can).empty();
+	    		$(ican).empty();
+	    	}		
+		}
+	    function packageList(pkgarray){
+	    	var me=this;
+	    	me.pkgarray=pkgarray;
+	    	me.dumpAllPackages = function(span,itemsspan,ignore_keep){
+	    		$(span).empty();
+	    		$(itemsspan).empty();
+		    	for(var i=0; i<me.pkgarray.length; i++){
+		    		var pkg = pkgarray[i];
+		    		dumpPackage(span,itemsspan,pkg,ignore_keep);
+		    	}
+	    	};
+	    }
+
+	    function dumpPackage(span,itemsspan,package,ignore_keep){
+	    	var s = span;
+	    	var is = itemsspan;
+	    	var p = package;
+    		var firstmani=p.manifest[0];
+    		var imgCan = get2DGem(firstmani,48,48);
+    		$(imgCan).addClass("ui-widget-content");
+    		$(imgCan).hover(
+    			function(){$(imgCan).addClass("ui-state-hover");},
+    			function(){$(imgCan).removeClass("ui-state-hover");}
+    		);
+    		//append anything we need, like title, etc for hover
+    		span.appendChild(imgCan);    		
+    		$(imgCan).click( {itemsspan:is,pkg:p} ,function(event){
+    			var itmspn=event.data.itemsspan;
+    			var el = event.srcElement || event.target;
+    			if( $(el).hasClass("ui-state-active") ){
+    				$(el).removeClass("ui-state-active");
+    				$(itmspn).empty();
+    				return;
+    			}
+    			else{ //handle if this is 'active' package now and show manifest
+	    			var pkg=event.data.pkg;
+	    			var spn = event.data.itemsspan;
+	    			$(el).siblings().removeClass("ui-state-active");
+	    			$(el).addClass("ui-state-active");
+	    			$(itmspn).empty();
+	    			for(var i=0; i<pkg.manifest.length; i++){
+	    				var mani=pkg.manifest[i];
+	    				if(mani.cmd=="c" || mani.cmd=="r"){
+	    					//only display 'gems' of common or rare
+	    					display2DGemBox(mani,spn,ignore_keep);
+	    				}
+	    				else{
+	    					//just ignore manifest
+	    				}
+	    			}
+	    		}
+    		});
+ 			function get2DGem(mani,wdth,hght){return satoshi.get2DGem(mani,wdth,hght);}
+    	} 
+	    
+	    function display2DGemBox(mani,span,ignore_keep){
+	        var s = mani;
+	        if(typeof(s) == 'object'){
+	        	var imgCan = get2DGem(s,48,48);
+	        	var title = JSON.stringify(s);
+	        	var newgembox = $("#templatesdiv [tname=gembox]").clone(true);
+	        	var uk = $(newgembox).find(".sa-userkeep");
+	        	var gi = $(newgembox).find(".sa-geminfo");
+	        	var ui = $(newgembox).find(".sa-useritem");
+	        	var ai = $(newgembox).find(".sa-appitem");
+	        	var ri = $(newgembox).find(".sa-realmitem");
+				var gc = $(newgembox).find(".sa-gemcan");
+	        	$(newgembox).attr("token",s.npoe[0]);
+	        	$(uk).attr("token",s.npoe[0]);
+				//$(newgembox).addClass("ui-state-active");
+				/*if(s.i[0] || s.i[1] || s.i[2]){
+					$(newgembox).find(".sa-gemcan").addClass("ui-state-active");	    		
+				}*/
+				//first, setup tooltip for hover on info-icon	        	
+	        	$(gi).attr("title",title);
+	        	$(gi).attr("token",s.npoe[0]);
+	        	$(gi).tooltip({tooltipClass:'sat-tooltip'})
+	        		.position({ my: "top center", at: "bottom+60 center" });
+	        		//.show({ effect: "blind", duration: 400, direction:"left" });
+	        	$(gi).tooltip({ show: { effect: "blind", duration: 300, direction:"left" } });
+				var theel=[];
+				if(s.cmd == 'r'){
+					$(ui).removeClass("ui-icon-cancel");
+					$(ui).addClass("ui-icon-star");
+					$(ai).removeClass("ui-icon-cancel");
+					$(ai).addClass("ui-icon-star");
+					$(ri).removeClass("ui-icon-cancel");
+					$(ri).addClass("ui-icon-star");
+					$(uk).addClass("ui-icon-heart");
+					$(uk).removeClass("ui-icon-plusthick");
+					$(uk).addClass("sa-noredeem");
+					$(uk).attr("title","YottaGem! not redeemable");
+					//$(gc).addClass("ui-state-active");
+					//theel.push([ui,ai,ri]);
+					enableViewItem(ui,s,s.npoe[5]);
+					enableViewItem(ai,s,s.npoe[6]);
+					enableViewItem(ri,s,s.npoe[7]);
+					$(gc).addClass("ui-state-active");
+				}
+				else if(s.cmd == 'c'){
+					if(s.k){
+						$(uk).removeClass("ui-icon-plusthick");
+						$(uk).addClass("ui-icon-heart");
+						if(!ignore_keep){
+							$(uk).attr("title","click to redeem");
+							$(uk).click({mani:s,srcElement:uk},function(event){
+								toggleKeep(event);
+							});
+						}
+						else{
+							$(uk).attr("title","you kept this gem");
+							$(uk).css( "cursor", "default" );
+						}
+					}
+					else{
+						$(uk).removeClass("ui-icon-heart");
+						$(uk).addClass("ui-icon-plusthick");
+						if(!ignore_keep){
+							$(uk).attr("title","click to keep");
+							$(uk).click({mani:s,srcElement:uk},function(event){
+								toggleKeep(event);
+							});
+						}
+						else{
+							$(uk).attr("title","you redeemed this gem");
+							//$(uk).css( "cursor", "default" );
+							$(uk).removeClass("ui-icon-plusthick");
+							$(uk).removeClass("ui-icon-heart");
+							$(uk).addClass("ui-icon-cart");
+						}
+					}
+		       		if(s.i[0]){
+						$(ui).removeClass("ui-icon-cancel");
+						$(ui).addClass("ui-icon-star");
+						//theel.push(ui);
+						enableViewItem(ui,s,s.npoe[5]);
+						$(gc).addClass("ui-state-active");
+						$(ui).attr("itemid",s.npoe[5]);
+					}
+					if(s.i[1]){
+						$(ai).removeClass("ui-icon-cancel");
+						$(ai).addClass("ui-icon-star");
+						//theel.push(ai);
+						enableViewItem(ai,s,s.npoe[6]);
+						$(gc).addClass("ui-state-active");
+						$(ai).attr("itemid",s.npoe[6]);
+					}
+					if(s.i[2]){
+						$(ri).removeClass("ui-icon-cancel");
+						$(ri).addClass("ui-icon-star");
+						//theel.push(ri);
+						enableViewItem(ri,s,s.npoe[7]);
+						$(gc).addClass("ui-state-active");
+						$(ri).attr("itemid",s.npoe[7]);
+					}
+				} //end for cmd='c'
+				else if(s.cmd == 'm'){
+					$(uk).removeClass("ui-icon-check");
+					$(uk).removeClass("ui-icon");
+				}
+				/*
+				if(theel.length){
+					$(gc).addClass("ui-state-active");
+					for(var i = 0; i < theel.length; i++){
+						var thisel = theel[i];							
+						$(thisel).click(function(event){
+							alert('view item not yet implemented');
+						});
+					}
+				}
+				*/
+				
+				$(span).append(newgembox);
+				$(gc).append(imgCan);
+				
+				function toggleKeep(event){
+					var m = event.data.mani;
+					var el = event.data.srcElement || event.srcElement || event.target;
+					if(m.k==0){ //need to toggle to keep
+						m.k = 1;
+		        		$(el).addClass("ui-icon-heart");
+		        		$(el).removeClass("ui-icon-plusthick");
+		        		$(el).attr("title","click to redeem");
+		        		newspeak('keep gem',false);
+					}
+					else if(m.k==1){
+						m.k = 0;
+						$(el).removeClass("ui-icon-heart");
+						$(el).addClass("ui-icon-plusthick");
+						$(el).attr("title","click to keep");
+						newspeak('redeem gem',false);
+					}					
+					var title = JSON.stringify(m);
+		        	$(el).next().tooltip('option','content',title);
+				}
+	        }
+			function get2DGem(mani,wdth,hght){return satoshi.get2DGem(mani,wdth,hght);}
+			//now, flag the view icons as appropriate
+			//TODO: INSERT CODE FOR HANDLING VIEW ITEM HERE!!!
+			function enableViewItem(el,mani,npoe){
+				var data = {elIcon:el,mani:mani,npoe:npoe};
+				$(el).click(data,function(event){
+					alert('view item not yet implemented: [' + npoe + ']');
+				});
+			}
+	    }
+			    
+		function newspeak(msg,alert,overide){
+			if(!silent.checked){
+				try{
+					newstatus(msg,alert);
+					setTimeout(
+						function(){
+							meSpeak.speak(msg, { amplitude: amplitude.value, wordgap: wordgap.value, pitch: pitch.value, speed: speed.value });
+						},
+						1
+					);
+				}
+				finally{
+					console.log('newspeak: ' + msg);
+				}
+			}
+			else if(overide){
+				try{
+					newstatus(msg,alert);
+					setTimeout(
+						function(){
+							meSpeak.speak(msg, { amplitude: amplitude.value, wordgap: wordgap.value, pitch: pitch.value, speed: speed.value });
+						},
+						1
+					);
+				}
+				finally{
+					console.log('newspeak: ' + msg);
+				}
+			}
+			else{
+				newstatus(msg,alert);
+				console.log('silent: ' + msg);
+			}
+		}
+		function newstatus(msg,alert){
+			//FuC< IE!!!!
+			//i've been lucky with everything else, but can't get
+			//this message bitchy thingy to work on IE
+			//so FuC< IE
+			if(alert){
+				msg="alert: " + msg;
+				$("#statusmessage").removeClass("ui-state-highlight");
+				$("#statusmessage").addClass("ui-state-error");
+				/*if(satoshi.browserDetect.browser=="Explorer"){
+					//$("#card").addClass("flipped");
+					//$("#logomsg").html('ei kcuf');
+					statusmessage.innerText = msg;
+					$("#card").addClass("flipped");
+					setTimeout(
+						function(){
+							//statusmessage.innerHtml = msg;
+							$("#card").removeClass("flipped");
+							return;
+						},
+						5000
+					);
+				}
+				else{*/
+					$("#statusmessage").html(msg);
+					$("#card").addClass("flipped");
+					setTimeout(
+						function(){
+							$("#card").removeClass("flipped");		
+						},
+						5000
+					);
+				//}
+			}
+			else{ //is not alert
+				//var msg="message: " + msg;
+				$("#statusmessage").removeClass("ui-state-error");
+				$("#statusmessage").addClass("ui-state-highlight");
+				/*if(satoshi.browserDetect.browser=="Explorer"){
+					//$("#card").addClass("flipped");
+					//$("#logomsg").html('ei kcuf');
+					statusmessage.innerText =msg;
+					$("#card").addClass("flipped");
+					setTimeout(
+						function(){
+							//statusmessage.innerHtml =msg;
+							$("#card").removeClass("flipped");
+							return;
+						},
+						5000
+					);
+				}
+				else{*/
+					$("#statusmessage").html(msg);
+					$("#card").addClass("flipped");
+					setTimeout(
+						function(){
+							$("#card").removeClass("flipped");		
+						},
+						5000
+					);
+				//}
+			}
+		}
+
+
+
+/*function queuedPackageClick(e,imgCan,itemsspan,pkg){
+	$(imgCan).addClass(".selected");
+}*/
+
+	</script>
+	<div id="templatesdiv" style="xvisibility:hidden;width:100%;overflow-y:none;overflow-x:auto;height:80px;" class="">
+		<div tname="gembox" class="gembox ui-widget ui-widget-content">
+			<div class="sa-gemhead" style="">
+				<span title="click to keep" class="ui-icon ui-icon-plusthick sa-userkeep" style=""></span>
+				<span class="ui-icon ui-icon-comment sa-geminfo" style=""></span>
+			</div>
+			<div class="sa-gemcan" style="margin:0px;padding:0px;">
+			</div>
+			<span title="user item" class="sa-itemind sa-useritem ui-icon ui-icon-cancel"></span>
+			<span title="app item" class="sa-itemind sa-appitem ui-icon ui-icon-cancel"></span>
+			<span title="realm item" class="sa-itemind sa-realmitem ui-icon ui-icon-cancel"></span>
+		</div>
+	</div>
+	{% endblock %}

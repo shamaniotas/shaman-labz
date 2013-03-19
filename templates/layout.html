@@ -1,0 +1,497 @@
+<!doctype html>
+<html class="ui-widget-content" style="border:none;">
+<head>
+  <meta charset="utf-8">
+  <title>Welcome to Shaman-Labz</title>
+  <meta name="author" content="tandem">
+  <link rel="stylesheet" href="/css/style.css">
+
+	<!-- REQUIRED HEADER FOR SATOSHI CLIENT -->    
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.js"></script>
+    <link rel="stylesheet" title="satcss" name="smoothness" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/smoothness/jquery-ui.css" type="text/css"/>
+    <link rel="stylesheet" title="satcss" name="start" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/start/jquery-ui.css" type="text/css"/>
+    <link rel="stylesheet" title="satcss" name="redmond" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/redmond/jquery-ui.css" type="text/css"/>
+    <link rel="stylesheet" title="satcss" name="sunny" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/sunny/jquery-ui.css" type="text/css"/>
+    <!--
+    <link rel="stylesheet" title="satcss" name="overcast" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/overcast/jquery-ui.css" type="text/css"/>
+    -->
+    <link rel="stylesheet" title="satcss" name="le-frog" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/le-frog/jquery-ui.css" type="text/css"/>
+    <!--
+    <link rel="stylesheet" title="satcss" name="flick" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/flick/jquery-ui.css" type="text/css"/>
+    -->
+    <link rel="stylesheet" title="satcss" name="pepper-grinder" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/pepper-grinder/jquery-ui.css" type="text/css"/>
+    <link rel="stylesheet" title="satcss" name="eggplant" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/eggplant/jquery-ui.css" type="text/css"/>
+    <link rel="stylesheet" title="satcss" name="dark-hive" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/dark-hive/jquery-ui.css" type="text/css"/>
+    <!--
+    <link rel="stylesheet" title="satcss" name="cupertino" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/cupertino/jquery-ui.css" type="text/css"/>
+    -->
+    <link rel="stylesheet" title="satcss" name="south-street" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/south-street/jquery-ui.css" type="text/css"/>
+    <link rel="stylesheet" title="satcss" name="blitzer" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/blitzer/jquery-ui.css" type="text/css"/>
+    <link rel="stylesheet" title="satcss" name="excite-bike" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/excite-bike/jquery-ui.css" type="text/css"/>
+    <link rel="stylesheet" title="satcss" name="vader" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/vader/jquery-ui.css" type="text/css"/>
+	<!-- removed because of bad contrast between ui-widget and ui-icon 
+    <link rel="stylesheet" title="satcss" name="mint-choc" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/mint-choc/jquery-ui.css" type="text/css"/>
+    -->
+
+    <link rel="stylesheet" title="satcss" name="black-tie" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/black-tie/jquery-ui.css" type="text/css"/>
+    <link rel="stylesheet" title="satcss" name="trontastic" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/trontastic/jquery-ui.css" type="text/css"/> 
+    <link rel="stylesheet" title="satcss" name="ui-lightness" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/ui-lightness/jquery-ui.css" type="text/css"/>
+    <link rel="stylesheet" title="satcss" name="ui-darkness" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/ui-darkness/jquery-ui.css" type="text/css"/>
+    <link rel="stylesheet" title="satcss" name="humanity" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/humanity/jquery-ui.css" type="text/css"/>
+
+    <!-- 
+    <link href='https://fonts.googleapis.com/css?family=Trade+Winds' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=400italic,400,700,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Londrina+Shadow' rel='stylesheet' type='text/css'>
+    -->
+    
+    
+    <!-- END REQUIRED HEADER FOR SATOSHI -->
+    <!--
+    
+    0000-000-00000-879e-26b28b7215f722cd-420e18169bf9d667-823af9e54342f1c9  feb 7!!
+    
+    -->
+    <style>
+    	.ui-progressbar{
+    		height:15px;
+    	}
+
+    	
+    	
+
+		#dq_spancan canvas.ui-widget-content,
+		#cq_spancan canvas.ui-widget-content, 
+		#sq_spancan canvas.ui-widget-content 
+		{
+				margin:5px;border-width:5px;border-style:outset; 
+		}
+		
+		#dq_spancan canvas.ui-widget-content.ui-state-active,
+		#cq_spancan canvas.ui-widget-content.ui-state-active, 
+		#sq_spancan canvas.ui-widget-content.ui-state-active 
+		{
+			margin:5px;border-width:5px;border-style:inset; 
+		}
+
+
+		.xgem{
+			border:2px dashed transparent;
+		}
+    	.xuseritem{
+    		border-right:2px dashed green;
+    	}
+    	.xappitem{
+    		border-top:2px dashed blue;
+    	}
+    	.xrealmitem{
+    		border-left:2px dashed purple;
+    	}
+    	.xkeep{
+    		border-bottom: 2px dashed green;
+    	}
+    	.xredeem{
+    		border-bottom:2px dashed yellow;
+    	}
+    	.sa-noredeem{
+    		cursor:default;	
+    	}
+    	.yottagem{
+    		border:2px solid white;
+    	}
+    	.mani{
+    		border:2px solid transparent;
+    	}
+    	
+		.ui-icon-plusthick{
+			cursor:pointer;
+		}
+		.ui-icon-heart{
+			cursor:pointer;
+		}
+		.ui-icon-star{
+			cursor:pointer;
+		}
+		.sa-noredeem{
+			cursor:default;
+		}
+    	.gembox{
+    		width:62px;
+    		padding-left:4px; padding-top:2px; padding-right:4px;
+    		padding-bottom:2px;
+    		margin:2px;
+    		xmax-height:75px;
+    		overflow:hidden;
+			-webkit-border-radius: 3px 9px 3px 9px;
+			-moz-border-radius: 3px 9px 3px 9px;
+			-ms-border-radius: 3px 9px 3px 9px;
+			border-radius: 3px 9px 3px 9px;
+			display:inline-block;
+    	}
+    	.sa-itemind{
+    		display:inline-block;height:12px;width:12px;
+    		margin-left:3px;
+    	}
+    	.sa-geminfo{
+    		display:inline-block;float:right;position:relative;xmargin-right:0px;
+    		z-index:2;
+    	}
+    	.sa-userkeep{
+    		display:inline-block;float:left;position:relative;margin-left:1px;
+    		z-index:2;
+    	}
+    	.sa-gemhead{
+    		display:block;horizontal-align:center;width:95%;padding:0px;position:relative;
+    		z-index:2;
+    	}
+    	.sa-gemcan{
+    		height:56px;width:56px;padding:0px;
+    		border:3px dotted;
+			-webkit-border-radius: 9px 3px 9px 3px;
+			-moz-border-radius: 9px 3px 9px 3px;
+			-ms-border-radius: 9px 3px 9px 3px;
+			border-radius: 9px 3px 9px 3px;
+    	}
+    	.sa-gemcan.ui-state-active{
+    		border:3px outset;
+    	}
+    	.sa-gemcan canvas{
+    		top:-10px;left:4px;position:relative;
+
+			  -webkit-transition: -webkit-transform 1s;
+			     -moz-transition: -moz-transform 1s;
+			      -ms-transition: -ms-transform 1s;
+			       -o-transition: -o-transform 1s;
+			          transition: transform 1s;
+			  -webkit-transform-style: preserve-3d;
+			     -moz-transform-style: preserve-3d;
+			      -ms-transform-style: preserve-3d;
+			       -o-transform-style: preserve-3d;
+			          transform-style: preserve-3d;
+			  -webkit-transform-origin: middle center;
+			     -moz-transform-origin: middle center;
+			      -ms-transform-origin: middle center;
+			       -o-transform-origin: middle center;
+			          transform-origin: middle center;
+    	}
+    	
+		.sa-gemcan canvas:hover 
+		{
+		  -webkit-transform: rotateZ( 180deg );
+		     -moz-transform: rotateZ( 180deg );
+		      -ms-transform: rotateZ( 180deg );
+		       -o-transform: rotateZ( 180deg );
+		          transform: rotateZ( 180deg );
+		}
+		.gemcan canvas:active 
+		{	 
+		}
+
+    	.sat-tooltip{
+    		font-size:.6em;max-width:256px;overflow:auto; font-color:black;  
+    		white-space: pre-wrap;      /* CSS3 */   
+   			white-space: -moz-pre-wrap; /* Firefox */    
+   			white-space: -pre-wrap;     /* Opera <7 */   
+   			white-space: -o-pre-wrap;   /* Opera 7 */    
+   			word-wrap: break-word;      /* IE */
+			zoom: 1;
+			filter: alpha(opacity=90);
+			opacity: 0.9;
+   		}
+   		.q_progress
+   		{
+   			margin-top:7px;
+   			float:right;
+   			width:50%;
+   		}
+   		.q_footer
+   		{
+   			border-top:1px dotted gray;
+   			padding-top:2px;
+   			padding-left:3px;
+   			padding-right:3px;
+   			padding-bottom:0px;
+   			width:98%;height:35px;
+   			float-bottom;
+   			font-size:.8em;
+   			overflow:hidden;
+   		}
+   		.q_body
+   		{
+   			width:100%;height:260px;
+   			overflow-x:hidden;
+   			border-top:1px gray dotted;
+   			font-size:.8em;
+   			overflow-y:hidden;
+   			overflow:hidden;
+   		}
+   		.qitems_spancan
+   		{
+   			white-space:wrap;
+   			width:67%;height:98%;
+   			overflow-x:hidden;overflow-y:auto;
+   			padding:3px;
+   			float:right;
+   			border-left:1px dotted gray;
+   		}
+   		.q_info
+   		{
+   			width:31%;height:100%;
+   			overflow-x:hidden;overflow-y:auto;
+   			border-right:1px dotted gray;
+   			padding:3px;float:left;
+   		}
+   		.q_spancan{overflow-x:hidden;width:67%;height:100%;float:right;padding:3px;overflow-y:auto;}
+		.q_header{width:100%;height:80px;font-size:.8em;overflow:hidden;}
+		
+
+   		.ui-tabs-vertical 
+   		{ 
+   			//width: 100%; 
+   			height:97%; background:none; background:transparent; 
+   			border-left:none; border-right:none; border-bottom:none; 
+   		}
+  		.ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 20%; font-size:.9em; }
+  		.ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 98%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
+  		.ui-tabs-vertical .ui-tabs-nav li a { display:block; }
+  		.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; }
+  		.ui-tabs-vertical .ui-tabs-panel { padding: .5em; width: 77%;overflow:auto;max-height:99%;}
+  		.ui-tabs .ui-tabs-panel{ padding-top: .5em; padding-bottom: 0px; padding-left: 10px; padding-right : 10px;background:transparent;}
+  		.transparent {
+			zoom: 1;
+			filter: alpha(opacity=50);
+			opacity: 0.5;
+		}
+		html {
+			overflow-x:hidden;
+		}
+		
+		.container {
+      		-webkit-perspective: 800px;
+         	-moz-perspective: 800px;
+         	-ms-perspective: 800px;
+           	-o-perspective: 800px;
+            perspective: 800px;
+    	}
+	</style>
+<style>
+#card {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  -webkit-transition: -webkit-transform 1s;
+     -moz-transition: -moz-transform 1s;
+      -ms-transition: -ms-transform 1s;
+       -o-transition: -o-transform 1s;
+          transition: transform 1s;
+  -webkit-transform-style: preserve-3d;
+     -moz-transform-style: preserve-3d;
+      -ms-transform-style: preserve-3d;
+       -o-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-transform-origin: top center;
+     -moz-transform-origin: top center;
+      -ms-transform-origin: top center;
+       -o-transform-origin: top center;
+          transform-origin: top center;
+}
+
+#card.flipped {
+  -webkit-transform: translateY( 100% ) rotateX( 180deg );
+     -moz-transform: translateY( 100% ) rotateX( 180deg );
+      -ms-transform: translateY( 100% ) rotateX( 180deg );
+       -o-transform: translateY( 100% ) rotateX( 180deg );
+          transform: translateY( 100% ) rotateX( 180deg );
+}
+
+#card figure {
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  -webkit-backface-visibility: hidden;
+     -moz-backface-visibility: hidden;
+      -ms-backface-visibility: hidden;
+       -o-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+
+#card .front {
+}
+#card .back {
+  -webkit-transform: rotateX( -180deg );
+     -moz-transform: rotateX( -180deg );
+      -ms-transform: rotateX( -180deg );
+       -o-transform: rotateX( -180deg );
+          transform: rotateX( -180deg );
+}
+#statusmessage{
+	margin-top:10px;
+	font-spacing:3px;
+	font-size:1.1em;
+	width:60%;
+	font-weight:bold;
+	overflow:none;
+	white-space:nowrap;
+}
+h1 {
+	display:inline;
+	font-size:2.2em;
+	font-weight:bold;
+	width:60%;
+	cursor:default;
+	letter-spacing:4px;
+	padding-left:5px;
+	padding-right:5px;
+	margin-top:2px;
+}
+h1:hover {
+	cursor:pointer;
+}
+
+
+</style>
+
+</head>
+
+<body>
+  <header>
+    <section class="container">
+		<div id="card">
+			<figure id="logo" class="front">
+				<h1 style="" id="logomsg" class="ui-state-default ui-widget-header ui-corner-all" onclick="runanim()">welcome to shaman-labz</h1>
+			</figure>
+			<figure class="back">
+				<div id="statusmessage" style="" class="ui-widget-content .ui-state-active ui-corner-all" ></div>
+			</figure>
+		</div>
+	</section>
+    <div style="margin-left:5em;display:inline;float:right;margin-top:10px;">
+    	Theme:<select class="ui-corner-all" style="margin-left:2em;display:inline;width:15em;" id="seltheme" onchange="switchStyle()">
+  			<option value="humanity">realm satoshi (humanity +1)</option>
+  			<option value="ui-lightness">cloakendawn (0xffffff)</option>
+  			<option value="smoothness">greyland (0x050505)</option>
+  			<option value="ui-darkness">cloakeneve (0x000000)</option>
+  			<option value="start">orgchart (business PG/R)</option>
+  			<option value="redmond">Playground (Teens Only PG-17)</option>
+  			<option value="sunny">sunflowers (Family G)</option>
+  			<!-- option value="overcast">rainy day</option -->
+  			<option value="le-frog">kermy</option>
+  			<!-- option value="flick">flick</option -->
+  			<option value="pepper-grinder">pepper</option>
+  			<option value="eggplant">vogon</option>
+  			<option value="dark-hive">1984 (0x010101)</option>
+  			<!-- option value="cupertino">cupertino</option -->
+  			<option value="south-street">new philly</option>
+  			<option value="blitzer">cherokee</option>
+  			<option value="excite-bike">zebra sunrise</option>
+  			<option value="vader">shadownia-grungetech</option>
+  			<!-- option value="mint-choc">mint choc</option -->
+  			<option value="black-tie">elegalactic</option>
+  			<option value="trontastic">baud-ville</option>
+		</select> 
+    </div>
+  </header>
+  <br/>
+  <div id="divmain" role="main" class="container" style="margin-bottom: 1em;display:none;margin-top:1em;">
+
+  {% block main %}{% endblock %}
+  </div>
+  <script>
+		//setup the header stuff
+		$("h1").hover(
+			function(){$(this).addClass("ui-state-hover");},
+			function(){$(this).removeClass("ui-state-hover");}
+		);
+  		$(function() {
+        	$("input[type=submit], .button").button();
+        	cv = getCookie('theme');
+        	if(typeof(cv) !== "undefined"){
+        		$('#seltheme').val(cv);
+        		switchStyle(cv);
+        	}
+        	else{
+        		switchStyle( $('#seltheme').val() );
+        	}
+        	$("#divmain").show();
+        	//$('#btn_stop').hide();        	
+    	});
+    	function switchStyle(val){
+    		var l = val || $('#seltheme').val();
+    		setCookie('theme',l,30);
+    		$('link[title=satcss]').each(function(){
+    			$(this).prop("disabled", !( $(this).attr('name') == l ) )
+    		});
+    	}
+    	function runanim(){
+    		var myBeastobj = chainedBeasts[0];
+			var myBeast=new spriteSheet(myBeastobj.common_properties,myBeastobj.spritesheets[0]);
+    		var animatedcanvas = myBeast.canvas;
+    		document.body.appendChild(animatedcanvas);
+			animatedcanvas.style.left=screen.width.toString()+"px";
+			var tp = Math.round(Math.random()*(screen.height-400));
+			animatedcanvas.style.left=screen.width.toString()+"px";
+			animatedcanvas.style.top=tp.toString()+"px";
+			animatedcanvas.style.zIndex=tp.toString();
+			animatedcanvas.style.position="absolute";
+			//var offset = (screen.width*50)/1000/30;
+			var offset = 4;
+			var left=screen.width;
+			var intid = setInterval(
+				function(){
+					if(left<=-animatedcanvas.width){
+						clearInterval(intid);
+						myBeast.stop();
+						myBeast.intid=0;
+						document.body.removeChild(animatedcanvas);
+					}
+					else{
+						left -= offset;
+						animatedcanvas.style.left = left + "px";
+					}
+				},
+				1000/30
+			);
+			myBeast.play();
+    	}
+    	function setCookie(c_name,value,exdays){
+			var exdate=new Date();
+			exdate.setDate(exdate.getDate() + exdays);
+			var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+			document.cookie=c_name + "=" + c_value;
+		}
+		function getCookie(c_name){
+			var i,x,y,ARRcookies=document.cookie.split(";");
+			for (i=0;i<ARRcookies.length;i++){
+		  		x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+		  		y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+		  		x=x.replace(/^\s+|\s+$/g,"");
+		  		if (x==c_name){
+		    		return unescape(y);
+		    	}
+		  	}
+		}
+  </script>
+  <div class="ifooter">
+  <footer>
+    <nav><ul class="inline bull">
+      <li>(c) shaman iotas took 2013</li>
+    </ul></nav>
+  </footer>
+  </div>
+  	<script type="text/javascript">
+  		/* this is just for analytics*/
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-37974175-1']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+</body>
+</html>

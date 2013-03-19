@@ -1,0 +1,354 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - collada</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #000000;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+			#info {
+				color: #fff;
+				position: absolute;
+				top: 10px;
+				width: 100%;
+				text-align: center;
+				z-index: 100;
+				display:block;
+
+			}
+
+			a { color: skyblue }
+		</style>
+	</head>
+	<body>
+		<div id="info">
+			testcontainer
+		</div>
+		<br/>
+		<select id='myselect' onchange='objectchange()'>
+		</select>
+		<br/>
+		<div id="bucket" style="margin:10px;width:250px;height:250px;border:1px dotted gray;">
+		</div>
+
+		<script src="/js/three.js"></script>
+
+		<script src="/js/loaders/ColladaLoader.js"></script>
+
+		<script src="/js/Detector.js"></script>
+		<script src="/js/libs/stats.min.js"></script>
+		<script src="/js/dae_models.js"></script>
+
+		<script>
+		
+		
+
+var realmItems = {
+	'directory':'./dae/',
+	'copperweight':[
+		{ file:'anonymous_coffee_mug.dae', scale:'1', height:'2', width:'1', good:true, xz:0 },
+		{ file:'balloon_dog.dae', scale:'1', height:'5', width:'5', good:true, xz:0 },
+		{ file:'bamboo_bicycle.dae', scale:'1', height:'30', width:'10', good:false, xz:0 },
+		{ file:'cray_i_bumblebee.dae', scale:'1', height:'50', width:'10', good:true, xz:0 },
+		{ file:'dnd_dice_complete_set.dae', scale:'1', height:'1', width:'1', good:true, xz:0 },
+		{ file:'dnd_dice_d10.dae', scale:'1', height:'1.5', width:'1', good:true, xz:0 },
+		{ file:'dnd_dice_d12.dae', scale:'1', height:'1.5', width:'1', good:true, xz:0 },
+		{ file:'dnd_dice_d20.dae', scale:'1', height:'1.5', width:'1', good:true, xz:0 },
+		{ file:'dnd_dice_d3.dae', scale:'1', height:'1.5', width:'1', good:true, xz:0 },
+		{ file:'dnd_dice_d4.dae', scale:'1', height:'1.5', width:'1', good:true, xz:0 },
+		{ file:'dnd_dice_d6.dae', scale:'1', height:'1.5', width:'1', good:true, xz:0 },
+		{ file:'dnd_dice_d8.dae', scale:'1', height:'1.5', width:'1', good:true, xz:0 },
+		{ file:'escher_solid.dae', scale:'1', height:'2', width:'1', good:true, xz:0 },
+		{ file:'girl_toy_car.dae', scale:'1', height:'3.5', width:'5', good:true, xz:0 },
+		{ file:'houseplant.dae', scale:'1', height:'30', width:5, good:true, xz:0 },
+		{ file:'knockoff_ferarri_v4.dae', scale:'1', height:'125', width:'10', good:true, xz:0 }
+	],
+	'silverweight':[
+		{ file:'auxiliary_gpu_matrix.dae', scale:'1', height:'10', width:'10', good:false, xz:0 },
+		{ file:'celtic_clover_knot.dae', scale:'1', height:'125', width:'10', good:true, xz:0 },
+		{ file:'dantes_treasure_chest.dae', scale:'1', height:'30', width:'10', good:true, xz:0 },
+		{ file:'large_canopy_tent.dae', scale:'1', height:'10', width:'10', good:false, xz:0 },
+		{ file:'microscope.dae', scale:'1', height:'30', width:'10', good:true, xz:0 },
+		{ file:'mini_surveillance_unit.dae', scale:'1', height:'200', width:'10', good:true, xz:0 },
+		{ file:'mother_daughter_diamond_platinum.dae', scale:'1', height:'1', width:'10', good:true, xz:0 },
+		{ file:'papamamababy_bear_defense.dae', scale:'1', height:'10', width:'10', good:false, xz:0 },
+		{ file:'rugged_android_tablet.dae', scale:'1', height:'10', width:'10', good:false, xz:0 },
+		{ file:'silverweight_diamond.dae', scale:'1', height:'15', width:'10', good:true, xz:0 },
+		{ file:'skate_funbox.dae', scale:'1', height:'100', width:'10', good:true, xz:0 },
+		{ file:'skate_halfpipe_ramp.dae', scale:'1', height:'90', width:'10', good:true, xz:0 },
+		{ file:'leopard_purse.dae', scale:'1', height:'100', width:'10', good:true, xz:0 },
+		{ file:'pet_rock.dae', scale:'1', height:'3', width:'10', good:true, xz:0 },
+		{ file:'purple_bff.dae', scale:'1', height:'30', width:'10', good:true, xz:0 },
+		{ file:'zippo_lighter.dae', scale:'1', height:'1', width:'10', good:false, xz:0 }
+	],
+	'goldenweight':[
+		{ file:'apache_logbow.dae', scale:'1', height:'1', width:'10', good:false, xz:0 },
+		{ file:'atari_controller.dae', scale:'1', height:'10', width:'10', good:false, xz:0 },
+		{ file:'bumblebee_challenger.dae', scale:'1', height:'10', width:'10', good:false, xz:0 },
+		{ file:'goldenweight_luck_o_the_irish.dae', scale:'1', height:'10', width:'10', good:false, xz:0 },
+		{ file:'goldenweight_yotagem_collection.dae', scale:'1', height:'10', width:'10', good:true, xz:0 },
+		{ file:'transwarp_alternating_frobnicator.dae', scale:'1', height:'1', width:'10', good:false, xz:0 },
+		{ file:'sundial.dae', scale:'1', height:'9', width:'10', good:true, xz:0 },
+		{ file:'vintage_blue_indian.dae', scale:'1', height:'40', width:'10', good:true, xz:0 },
+	],
+	'yotagems':[
+		{ file:'vintage_game_system.dae', scale:'1', height:'10', width:'10', good:false, xz:0 },
+		{ file:'100_year_nebula_carrier.dae', scale:'1', height:'1', width:'10', good:false, xz:0 },
+		{ file:'lost_ark.dae', scale:'1', height:'10', width:'10', good:false, xz:0 },
+		{ file:'paperclip.dae', scale:'1', height:'10', width:'10', good:true, xz:0 },
+		{ file:'pet_zombie_1.dae', scale:'1', height:'10', width:'10', good:false, xz:0 },
+		{ file:'phantom_mark_ii.dae', scale:'1', height:'10', width:'10', good:true, xz:0 },
+		{ file:'quantum_entangled_usbkeys.dae', scale:'1', height:'1', width:'10', good:false, xz:0 },
+		{ file:'yotta_class_destroyer.dae', scale:'1', height:'10', width:'10', good:false, xz:0 }
+	]
+};
+
+			for(arr in realmItems){
+				for(var i=0; i<realmItems[arr].length;i++){
+					var item=realmItems[arr][i];
+					if(item.good){
+						var opt = document.createElement("option");
+						opt.value=i;
+						opt.opt = arr;
+						opt.innerText=opt.opt + ":" + item.file;
+						myselect.appendChild(opt);
+					}
+				}			
+			}
+
+			
+			/*
+			for(var i=0; i<realmItems.copperweight.length;i++){
+				var item=realmItems.copperweight[i];
+				if(item.good){
+					var opt = document.createElement("option");
+					opt.value=i;
+					opt.innerText=item.file;
+					copperselect.appendChild(opt);
+				}
+			}
+			*/
+
+
+			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
+			var container, stats;
+			var scale=1;
+			
+			
+			var units=1;
+			var near=.001;
+			var far=1000;
+			var gridsize=10;
+			var stepsize=1;
+			var size=30;
+
+			var camera, scene, renderer, objects;
+			var particleLight, pointLight;
+			var dae, skin;
+			
+			//choose item here
+			var item = realmItems.copperweight[3];
+			var fn,h,w,loader;
+			function objectchange(){
+				sa=true;
+				while (bucket.hasChildNodes()) {
+    				bucket.removeChild(bucket.lastChild);
+				}
+				var i = myselect.options[myselect.selectedIndex].value;
+				var opt = myselect.options[myselect.selectedIndex].opt;
+				item=realmItems[opt][i];
+				fn= realmItems.directory + item.file;
+				scale = parseInt(item.scale);
+				//units=1/scale;
+				h=parseInt(item.height);
+				w=parseInt(item.width);
+				loader=new THREE.ColladaLoader();
+				loader.options.convertUpAxis = true;
+				loader.load( fn, function ( collada ) {
+	
+					dae = collada.scene;
+					skin = collada.skins[ 0 ];
+	
+					//dae.scale = collada.scene.scale;
+					dae.scale.x = dae.scale.y = dae.scale.z = scale;
+					dae.updateMatrix();
+					sa=false;
+					init();
+					animate();
+	
+				} );
+			}
+
+			//copperchange();
+			
+			/*loader.options.convertUpAxis = true;
+			loader.load( fn, function ( collada ) {
+
+				dae = collada.scene;
+				skin = collada.skins[ 0 ];
+
+				dae.scale.x = dae.scale.y = dae.scale.z = scale;
+				dae.updateMatrix();
+
+				init();
+				animate();
+
+			} );*/
+
+			function init() {
+
+				container = document.createElement( 'span' );
+				bucket.appendChild( container );
+
+				camera = new THREE.PerspectiveCamera( 45, bucket.clientWidth / bucket.clientHeight, near, far );
+				camera.position.set( 2, 10, 2);
+
+				scene = new THREE.Scene();
+
+				// Grid
+
+				var size = gridsize*scale*h, step = 1*h;
+
+				var geometry = new THREE.Geometry();
+				var material = new THREE.LineBasicMaterial( { color: 0x003000 } );
+
+				for ( var i = - size; i <= size; i += step ) {
+
+					geometry.vertices.push( new THREE.Vector3( - size, - 0.04, i ) );
+					geometry.vertices.push( new THREE.Vector3(   size, - 0.04, i ) );
+
+					geometry.vertices.push( new THREE.Vector3( i, - 0.04, - size ) );
+					geometry.vertices.push( new THREE.Vector3( i, - 0.04,   size ) );
+
+				}
+
+				var line = new THREE.Line( geometry, material, THREE.LinePieces );
+				scene.add( line );
+
+				// Add the COLLADA
+
+				scene.add( dae );
+				var clr = 0xFFFFB5;
+
+				particleLight = new THREE.Mesh( new THREE.SphereGeometry( 4, 8, 8 ), new THREE.MeshBasicMaterial( { color: clr } ) );
+				scene.add( particleLight );
+
+				// Lights
+
+				scene.add( new THREE.AmbientLight( clr*.2 ) );
+
+				var directionalLight = new THREE.DirectionalLight(clr );
+				directionalLight.position.set(1, 1, 1).normalize();
+				scene.add( directionalLight );
+
+				pointLight = new THREE.PointLight( clr);
+				pointLight.position = {x:0,y:4,z:8};
+				scene.add( pointLight );
+
+				renderer = new THREE.WebGLRenderer();
+				renderer.setSize( bucket.clientWidth, bucket.clientHeight );
+
+				container.appendChild( renderer.domElement );
+
+				stats = new Stats();
+				stats.domElement.style.position = 'absolute';
+				stats.domElement.style.top = '0px';
+				stats.domElement.style.display='none';
+				container.appendChild( stats.domElement );
+
+				//
+
+				//bucket.addEventListener( 'resize', onBucketResize, false );
+
+			}
+
+			function onBucketResize() {
+
+				camera.aspect = bucket.clientWidth / bucket.clientHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( bucket.clientWidth, bucket.clientHeight );
+
+			}
+
+			//
+
+			var t = 0;
+			var sa=false;
+			var clock = new THREE.Clock();
+
+			function animate() {
+				if(sa){return;}
+				var delta = clock.getDelta();
+
+				requestAnimationFrame( animate );
+
+				if ( t > 1 ) t = 0;
+
+				if ( skin ) {
+
+					// guess this can be done smarter...
+
+					// (Indeed, there are way more frames than needed and interpolation is not used at all
+					//  could be something like - one morph per each skinning pose keyframe, or even less,
+					//  animation could be resampled, morphing interpolation handles sparse keyframes quite well.
+					//  Simple animation cycles like this look ok with 10-15 frames instead of 100 ;)
+
+					for ( var i = 0; i < skin.morphTargetInfluences.length; i++ ) {
+
+						skin.morphTargetInfluences[ i ] = 0;
+
+					}
+
+					skin.morphTargetInfluences[ Math.floor( t * 30 ) ] = 1;
+
+					t += delta;
+
+				}
+
+				render();
+				stats.update();
+
+			}
+
+			function render() {
+
+				var timer = Date.now() * 0.0005;
+
+				camera.position.x = Math.cos( timer ) * (h*4);
+				camera.position.y = h;
+				camera.position.z = Math.sin( timer ) * (h*4);
+				
+				var pos={
+					x:scene.position.x,
+					y:scene.position.y+(h),
+					z:scene.position.z
+				};
+				camera.lookAt( pos );
+				//camera.lookAt(scene);
+				var lpos={
+					x:pos.x,
+					y:pos.y+10000,
+					z:pos.z
+				}
+
+				particleLight.position.x = Math.sin( timer * 4 ) * 3009;
+				particleLight.position.y = Math.cos( timer * 5 ) * 4000;
+				particleLight.position.z = Math.cos( timer * 4 ) * 3009;
+
+				//particleLight.position = lpos;
+				renderer.render( scene, camera );
+
+			}
+
+		</script>
+	</body>
+</html>

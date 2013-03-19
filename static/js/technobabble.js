@@ -1,0 +1,41 @@
+words1 = [
+	"ANOMALOUS ", "IONIC ", "AMBIENT ", "FANCY ", "PHASED ", "INVERTED ",
+	"THERMAL ", "MAGNATOMIC ", "HYPER-LUMINAL ", "CO-LINEAR ", "ASSYMETRICAL ",
+	"TRANS-WARP ", "PHOTONIC ", "HYPER ", "QUANTUM ", "MODULATED ", "IMAGINARY ",
+	"UNKNOWN ", "GIGA-WATT ", "TERA-HASH ", "META ", "TEMPORAL ", "RAPID ",
+	"OSCILLATING ", "COMMON ", "COMMAND ", "MAGNETIC ", "OPTICAL ", "AUXILIARY ",
+	"PICO ", "SATOSHI ", "HADRONIC ", "LUMINESCENT ", "BOZON ", "SHAMAN "
+];
+
+words2 = [
+	"TANDEM ", "FROBNICATE ", "RECURSIVE ", "YU-SHIANG ", "ZERO ", "OMEGA ", "YOTA-",
+	"NEUTRINO ", "ENERGY ", "ASYMPTOTIC ", "SUBSPACE ", "GRAVIMETRIC ", "SPACE-TIME ",
+	"E-M ", "DAMPENING ", "TACHYON ", "WARP ", "WAVEFRONT ", "INTERFACE ", "PARTICLE ",
+	"BARYON ", "FREQUENCY ", "SPATIAL ", "PHASE ", "BAUD ", "HASHRATE ", "FLUX ",
+	"ALTERNATING ", "FRACTAL ", "ANONYMOUS ", "E-ORGANIC ", "PULSE ", "PLASMA ", "DATA ", 
+	"GEM ", "PICONOMIC ", "NAKAMOTO ", "ASSIMILATED ", "TRANSMOGRIFIED ", "FREEDOM ", 
+	"FELIX ", "ASIC ", "DASH-JR ", "ANDRESEN ", "TCAT-M ", "GARZIK ", "CORALLO ",
+	"SIRIUS-M ", "DRAGON ", "GEDANKEN ", "GROCK ", "FINNEY ", "AES "
+];
+
+words3 = [
+	 "QUUX ", "INCONSISTENCY ", "HOFSTADTER ",
+	"RELAY", "EMISSION", "PHENOMENON", "INTERFERENCE", "DISTORTION", "VARIANCE", "HARMONIC",
+	"CONDUIT", "FIELD", "DISCRIMINATOR", "ARRAY", "CONFIGURATION", "SINGULARITY", 
+	"ZOMBIE-NODE", "MATRIX", "TESSERACT", "DISTURBANCE", "INVERSION", "PATTERN", "REALM",
+	"STREAM", "DOMAIN", "EFFECT", "CAPACITOR", "CONTINUUM", "ACTUATOR", "CONTROLLER",
+	"NETWORK", "G P U", "FEEDBACK", "QBIT", "ELOI", "PRAETOR", "PARITY", "IOTAS",
+	"DAEMON", "FLAG", "FROBNITZITY", "TUMBOLIA", "MOBUIS", "EQUILIBRIUM", "ATTACK"
+];
+
+function SpeakTechnoBaby() {
+   var index;
+   var wordFinal;
+
+   ran1 = Math.round(Math.random()*(words1.length-1)) || 0;
+   ran2 = Math.round(Math.random()*(words2.length-1)) || 0;
+   ran3 = Math.round(Math.random()*(words3.length-1)) || 0;
+
+   anyfinalwords = words1[ran1]+words2[ran2]+words3[ran3];
+   return anyfinalwords;
+}

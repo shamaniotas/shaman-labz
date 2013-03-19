@@ -1,0 +1,138 @@
+<html>
+<head>
+<script src="/js/ancientbeast.js"></script>
+<script>
+//this is where we can load all our thingies :)
+var chainedBeasts = [
+	{
+		common_properties:{
+			framerate:30, bgColor:'transparent', spriteWidth:256, 
+			spriteHeight:256, frameCount:24, framestep:1,
+  			rows:3, columns:8, imageX:0,imageY:0, offset:3
+  		},
+		spritesheets:[
+	  		{id:0,url:'/img/default.png',default:true}
+		]
+	},
+	{
+		common_properties:{
+			framerate:30, bgColor:'transparent', spriteWidth:256, 
+			spriteHeight:256, frameCount:27, framestep:1,
+  			rows:4, columns:8, imageX:0,imageY:0, offset:3
+  		},
+		spritesheets:[
+	  		{id:1,url:'/img/death.png',default:false}
+		]
+	},
+	{
+		common_properties:{
+			framerate:30, bgColor:'transparent', spriteWidth:256, 
+			spriteHeight:256, frameCount:60, framestep:1,
+  			rows:8, columns:8, imageX:0,imageY:0, offset:3
+  		},
+		spritesheets:[
+	  		{id:2,url:'/img/idle.png',default:false}
+		]
+	}
+];
+
+</script>
+</head>
+<body>
+	<select id='selcreature' onchange="unchainAncientBeast()">
+		<option value="0">Walking/Default</option>
+		<option value="1">Death</option>
+		<option value="2">Idle</option>
+	</select><br/><br/>
+	<div id="testdiv"></div>
+	<hr/>
+	<select id='selusercreature' onchange="unchainUserBeast()">
+	</select>
+	<div id="controlsdiv">
+
+<input type="text" id="framerate" value="30">framerate<br>
+<input type="text" id="framestep" value="1">framestep<br>
+<input type="text" id="bgColor" value="transparent">bg color<br>
+<input type="text" id="spriteWidth" value="256">sprite width<br>
+<input type="text" id="spriteHeight" value="256">sprite height<br>
+<input type="text" id="offset" value="3">offset<br>
+<input type="text" id="frameCount" value="24">number of frames<br>
+<input type="text" id="rows" value="3">rows<br>
+<input type="text" id="columns" value="8">columns<br>
+<input type="text" id="imageX" value="0">X<br>
+<input type="text" id="imageY" value="0">Y<br>
+
+<button id="updateButton" onclick="{updateFields();}"> update </button>
+<button id="pauseButton" onclick="{pauseButtonPressed()}">play</button><br>
+</p>
+
+
+
+
+	</div>
+	
+<script>
+var myViewer = new ancientBeastViewer(chainedBeasts);
+//var td = document.getElementById("testdiv");
+var animatedcanvas = myViewer.getDefaultAnimatedCanvas();
+testdiv.appendChild(animatedcanvas);
+var userloaded = [];
+
+function commonProps(){
+	var comprops = {
+			framerate:framerate.value, framestep:framestep.value,
+			bgColor:bgColor.value, spriteWidth:spriteWidth.value, spriteHeight:spriteHeight.value, 
+			frameCount:frameCount.value, rows:rows.value, columns:columns.value, 
+			imageX:imageX.value,imageY:imageY.value, offset:offset.value
+  	};
+  	var imgurl = 0;
+}
+
+function unchainAncientBeast(){
+	myViewer.stopAll();
+	clearInterval(intid);
+	intid=0;
+	pos=0;
+	var animatedcanvas = myViewer.getAnimatedCanvasById(selcreature.selectedIndex);
+	while (testdiv.hasChildNodes()) {
+    	testdiv.removeChild(testdiv.lastChild);
+	}
+	
+	var left = screen.width;
+	testdiv.style.display="none";
+	testdiv.appendChild(animatedcanvas);
+	if(selcreature.selectedIndex==0){
+		animatedcanvas.style.left=screen.width.toString() + "px";
+		animatedcanvas.style.position="absolute";
+		offset = (screen.width*50)/1000/30;
+		intid = setInterval("updatePos()",1000/30);
+	}
+	testdiv.style.display="block";
+}
+var intid=0;
+var pos=0;
+var offset = 0;
+function updatePos(){
+	if(pos<=0){
+		pos=screen.width;
+	}
+	else{
+		pos = pos - offset;
+	}
+	animatedcanvas.style.left=pos + "px";
+}
+
+</script>
+  	<script type="text/javascript">
+  		/* this is just for analytics*/
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-37974175-1']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+</body>
+</html>

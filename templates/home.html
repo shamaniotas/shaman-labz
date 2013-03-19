@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block main %}
+  <p>YotaGem, the Yang to BitCoin's Yin (or vice, versa, I forget)</p>
+  {% if logged_in %}
+    <p>You're logged in already.</p>
+    <a href="/profile" class="button">profile</a>
+    <a href="/satoshi" class="button">satoshi client</a>
+    <a href="/logout" class="button">logout</a>
+  {% else %}
+    <p>Start browser-mining for Satoshi now!</p><p>logging in is easy using any of these trusted identity providers:</p>
+    <a href="/auth/google" class="button">Google</a>
+    <a href="/auth/facebook" class="button">Facebook</a>
+    <a href="/auth/yahoo?identity_url=me.yahoo.com" class="button">Yahoo!</a>
+    <a href="/auth/twitter" class="button">Twitter</a>
+    <a href="/auth/linkedin" class="button">LinkedIn</a>
+    <a href="/auth/windows_live" class="button">Windows Live</a>
+    <!-- a href="/auth/foursquare">foursquare</a -->
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block main %}
+  <div class="media">
+    <div class="body">
+      <h1 style="margin-top: 0; padding-top: 0">
+        <a href="{{user.link}}" target="_blank">{{ user.name }}</a></h1>
+    </div>
+  </div>
+
+
+  <h2>Unique User Record</h2>
+  <table>
+    <tbody>
+        <tr>
+        	<td>[AUTH_ID] </td><td>{{ user.auth_ids[0] }}</td>
+        </tr>
+        <tr>
+        	<td>[USER_ID]  </td><td>{{ session.user_id }}</td>
+        </tr>
+        <tr>
+        	<td>[user] </td><td>{{user}}</td>
+        </tr>
+        <tr>
+        	<td>[session] </td><td>{{session}}</td>
+        </tr>        
+      <!--
+      {% for k, v in session.items() -%}
+        <tr>
+          <td style="padding-right: 5px">{{ k }}:</td>
+          <td>{{ v }}</td>
+        </tr>
+      {% endfor -%}
+      -->
+    </tbody>
+  </table>
+  
+  <p style="margin-top: 2em;"></p>
+  <a href="/satoshi" class="btn">satoshi client</a><a href="/logout" class="btn">logout</a>
+{% endblock %}
