@@ -861,11 +861,13 @@
 	    //    clones gembox html template and hooks up functionality
 	    //		per manifest/gem
 	    /////////////////////////////////////////////////////////
-	    function display2DGemBox(mani,span,ignore_keep){
-	        var s = mani;
-	        if(typeof(s) == 'object'){
-	        	var imgCan = get2DGem(s,48,48);
-	        	var title = JSON.stringify(s);
+	    function display2DGemBox(manifest,itemspan,do_ignore_keep){
+	        var mani = manifest;
+	        var span = itemspan;
+	        var ignore_keep = do_ignore_keep;
+	        if(typeof(mani) == 'object'){
+	        	var imgCan = get2DGem(mani,48,48);
+	        	var title = JSON.stringify(mani);
 	        	var newgembox = $("#templatesdiv [tname=gembox]").clone(true);
 	        	var uk = $(newgembox).find(".sa-userkeep");
 	        	var gi = $(newgembox).find(".sa-geminfo");
@@ -873,26 +875,26 @@
 	        	var ai = $(newgembox).find(".sa-appitem");
 	        	var ri = $(newgembox).find(".sa-realmitem");
 				var gc = $(newgembox).find(".sa-gemcan");
-	        	$(newgembox).attr("token",s.npoe[0]);
-	        	$(uk).attr("token",s.npoe[0]);
+	        	$(newgembox).attr("token",mani.npoe[0]);
+	        	$(uk).attr("token",mani.npoe[0]);
 				//$(newgembox).addClass("ui-state-active");
-				/*if(s.i[0] || s.i[1] || s.i[2]){
+				/*if(mani.i[0] || mani.i[1] || mani.i[2]){
 					$(newgembox).find(".sa-gemcan").addClass("ui-state-active");	    		
 				}*/
 				//first, setup tooltip for hover on info-icon	        	
 	        	$(gi).attr("title",title);
-	        	$(gi).attr("token",s.npoe[0]);
+	        	$(gi).attr("token",mani.npoe[0]);
 	        	$(gi).tooltip({tooltipClass:'sat-tooltip'})
 	        		.position({ my: "top center", at: "bottom+60 center" });
 	        		//.show({ effect: "blind", duration: 400, direction:"left" });
 	        	$(gi).tooltip({ show: { effect: "blind", duration: 300, direction:"left" } });
-				var theel=[];
-				if(s.cmd == 'r'){ //this is a rare YotaGem!
-					$(ui).removeClass("ui-icon-cancel");
+				//var theel=[];
+				if(mani.cmd == 'r'){ //this is a rare YotaGem!
+					$(ui).removeClass("ui-icon-image");
 					$(ui).addClass("ui-icon-star");
-					$(ai).removeClass("ui-icon-cancel");
+					$(ai).removeClass("ui-icon-image");
 					$(ai).addClass("ui-icon-star");
-					$(ri).removeClass("ui-icon-cancel");
+					$(ri).removeClass("ui-icon-image");
 					$(ri).addClass("ui-icon-star");
 					$(uk).addClass("ui-icon-heart");
 					$(uk).removeClass("ui-icon-plusthick");
@@ -900,19 +902,19 @@
 					$(uk).attr("title","YottaGem! not redeemable");
 					//$(gc).addClass("ui-state-active");
 					//theel.push([ui,ai,ri]);
-					enableViewItem(ui,s,s.npoe[5]);
-					enableViewItem(ai,s,s.npoe[6]);
-					enableViewItem(ri,s,s.npoe[7]);
+					enableViewItem(ui,mani,mani.npoe[5]);
+					enableViewItem(ai,mani,mani.npoe[6]);
+					enableViewItem(ri,mani,mani.npoe[7]);
 					$(gc).addClass("ui-state-active");
 				}
-				else if(s.cmd == 'c'){ //this is common-weight gem
+				else if(mani.cmd == 'c'){ //this is common-weight gem
 					
-					if(s.k==1){ //flagged as user-keep
+					if(mani.k==1){ //flagged as user-keep
 						$(uk).removeClass("ui-icon-plusthick");
 						$(uk).addClass("ui-icon-heart");
 						if(!ignore_keep){ //this is  still not submitted, so hook up keep events
 							$(uk).attr("title","click to redeem");
-							$(uk).click({mani:s,srcElement:uk},function(event){
+							$(uk).click({mani:mani,srcElement:uk},function(event){
 								toggleKeep(event);
 							});
 						}
@@ -921,52 +923,61 @@
 							$(uk).css( "cursor", "default" );
 						}
 					}
-					else if(s.k==0) { //flagged as user-redeem
+					else if(mani.k==0) { //flagged as user-redeem
 						$(uk).removeClass("ui-icon-heart");
 						$(uk).addClass("ui-icon-plusthick");
 						if(!ignore_keep){ //need to hook up keep events
 							$(uk).attr("title","click to keep");
-							$(uk).click({mani:s,srcElement:uk},function(event){
+							$(uk).click({mani:mani,srcElement:uk},function(event){
 								toggleKeep(event);
 							});
 						}
 						else{ //no need to hook up events, already submitted to shaman
 							$(uk).attr("title","you redeemed this gem");
-							//$(uk).css( "cursor", "default" );
 							$(uk).removeClass("ui-icon-plusthick");
 							$(uk).removeClass("ui-icon-heart");
 							$(uk).addClass("ui-icon-cart");
 						}
 					}
 					//are any flagged as user-, app- or realm-items?
-		       		if(s.i[0]==1){ //is a user-item
-						$(ui).removeClass("ui-icon-cancel");
+		       		if(mani.i[0]==1){ //is a user-item
+						$(ui).removeClass("ui-icon-image");
 						$(ui).addClass("ui-icon-star");
-						//theel.push(ui);
-						enableViewItem(ui,s,s.npoe[5]);
 						$(gc).addClass("ui-state-active");
-						$(ui).attr("itemid",s.npoe[5]);
+						$(ui).attr("title","view user item");
+						//$(ui).attr("itemid",mani.npoe[5]);
 					}
-					if(s.i[1]==1){ //is an app-item
-						$(ai).removeClass("ui-icon-cancel");
+					if(mani.i[1]==1){ //is an app-item
+						$(ai).removeClass("ui-icon-image");
 						$(ai).addClass("ui-icon-star");
-						//theel.push(ai);
-						enableViewItem(ai,s,s.npoe[6]);
 						$(gc).addClass("ui-state-active");
-						$(ai).attr("itemid",s.npoe[6]);
+						$(ai).attr("title","view app item");
+						//$(ai).attr("itemid",mani.npoe[6]);
 					}
-					if(s.i[2]==1){ //is a realm-item
-						$(ri).removeClass("ui-icon-cancel");
+					if(mani.i[2]==1){ //is a realm-item
+						$(ri).removeClass("ui-icon-image");
 						$(ri).addClass("ui-icon-star");
-						//theel.push(ri);
-						enableViewItem(ri,s,s.npoe[7]);
 						$(gc).addClass("ui-state-active");
-						$(ri).attr("itemid",s.npoe[7]);
+						$(ri).attr("title","view realm item");
+						//$(ri).attr("itemid",mani.npoe[7]);
 					}
-				} //end for cmd='c'
-				else if(s.cmd == 'm'){
+					//make sure to enable view-item for all pieces
+					enableViewItem(ui,mani,mani.npoe[5]);
+					enableViewItem(ai,mani,mani.npoe[6]);
+					enableViewItem(ri,mani,mani.npoe[7]);					
+				} //end for cmd='c' = common gem
+				else if(mani.cmd == 'm'){ //this is just manifest
 					$(uk).removeClass("ui-icon-check");
 					$(uk).removeClass("ui-icon");
+					$(ri).removeClass("ui-icon-image");
+					$(ri).addClass("ui-icon-cancel");
+					$(ri).attr("title","manifest");
+					$(ai).removeClass("ui-icon-image");
+					$(ai).addClass("ui-icon-cancel");
+					$(ai).attr("title","manifest");
+					$(ui).removeClass("ui-icon-image");
+					$(ui).addClass("ui-icon-cancel");
+					$(ui).attr("title","manifest");
 				}
 				
 				$(span).append(newgembox);
@@ -999,7 +1010,10 @@
 			function enableViewItem(el,mani,npoe){
 				var data = {elIcon:el,mani:mani,npoe:npoe};
 				$(el).click(data,function(event){
-					alert('view item not yet implemented: [' + npoe + ']');
+					var msg = $(event.data.elIcon).attr("title");
+					msg += ": not yet implemented for [";
+					msg += event.data.npoe + "]";
+					alert(msg);
 				});
 			}
 	    }
@@ -1122,9 +1136,9 @@
 			</div>
 			<div class="sa-gemcan" style="margin:0px;padding:0px;">
 			</div>
-			<span title="user item" class="sa-itemind sa-useritem ui-icon ui-icon-cancel"></span>
-			<span title="app item" class="sa-itemind sa-appitem ui-icon ui-icon-cancel"></span>
-			<span title="realm item" class="sa-itemind sa-realmitem ui-icon ui-icon-cancel"></span>
+			<span title="view user gem" class="sa-itemind sa-useritem ui-icon ui-icon-image"></span>
+			<span title="view app gem" class="sa-itemind sa-appitem ui-icon ui-icon-image"></span>
+			<span title="view realm gem" class="sa-itemind sa-realmitem ui-icon ui-icon-image"></span>
 		</div>
 	</div>
 	{% endblock %}
