@@ -733,6 +733,12 @@
 	//		GENERAL UI FUNCTIONS
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	    /////////////////////////////////////////////////////////
+	    //satoshiClient message handler
+	    //	note: this is only temporary until i am sure i 
+	    //		have everything set the way i need
+	    //		then i'll come back and templatize this properly
+	    /////////////////////////////////////////////////////////
 	    function updatestatus(){ //UI function to display what has been mined
 	    	var stat = satoshi._status;
 	    	var sstr = "[mana" + ":" + stat.common[0].count + "] "
@@ -750,19 +756,34 @@
 	    	var size = JSON.stringify(satoshi.newmanifest).length;
 	    	$( "#maniprogressbar" ).progressbar("value", size);
 	    }
-
+	    /////////////////////////////////////////////////////////
+	    //refresh the deleted packages tab
+	    //    do not ignore keep actions (might be recovered)
+	    /////////////////////////////////////////////////////////
 		function refreshDeletedPackages(){
 			var do_not_ignore_keep  = false;
 			refreshPackageList(satoshi.deletedPackages, dq_spancan, dqitems_spancan, do_not_ignore_keep);
 		}
+	    /////////////////////////////////////////////////////////
+	    //refresh the server packages tab
+	    //    ignore keep actions (already submitted)
+	    /////////////////////////////////////////////////////////
 		function refreshServerPackages(){
 			var ignore_gembox_keep = ignore_keep = true;
 			refreshPackageList(satoshi.submittedPackages, sq_spancan, sqitems_spancan, ignore_keep);
 		}
+	    /////////////////////////////////////////////////////////
+	    //refresh the queued packages tab
+	    //    do not ignore keep actions (not yet submitted)
+	    /////////////////////////////////////////////////////////
 	    function refreshQueuedPackages(){
 	    	var  do_not_ignore_keep = false;
 	    	refreshPackageList(satoshi.packages, cq_spancan, cqitems_spancan, do_not_ignore_keep);
 	    }
+	    /////////////////////////////////////////////////////////
+	    //generic handler to handle all packages in an array
+	    //    used to service refresh[XYZ]Package handlers above
+	    /////////////////////////////////////////////////////////
 		function refreshPackageList(pkgs,can,ican,ignore_keep){
 	    	if(pkgs.length){
 		    	var pl = new packageList(pkgs);
@@ -771,8 +792,12 @@
 	    	else{
 	    		$(can).empty();
 	    		$(ican).empty();
-	    	}		
+	    	}
 		}
+	    /////////////////////////////////////////////////////////
+	    //packageList helper, 
+	    //	should probably include in refresh handler above
+	    /////////////////////////////////////////////////////////
 	    function packageList(pkgarray){
 	    	var me=this;
 	    	me.pkgarray=pkgarray;
@@ -785,7 +810,11 @@
 		    	}
 	    	};
 	    }
-
+	    /////////////////////////////////////////////////////////
+	    //Major wrapper for package headers
+	    //    this implements get2dgembox
+	    //		as well as wrapper for getimage
+	    /////////////////////////////////////////////////////////
 	    function dumpPackage(span,itemsspan,package,ignore_keep){
 	    	var s = span;
 	    	var is = itemsspan;
@@ -827,7 +856,11 @@
     		});
  			function get2DGem(mani,wdth,hght){return satoshi.get2DGem(mani,wdth,hght);}
     	} 
-	    
+ 	    /////////////////////////////////////////////////////////
+	    //display2DGemBox
+	    //    clones gembox html template and hooks up functionality
+	    //		per manifest/gem
+	    /////////////////////////////////////////////////////////
 	    function display2DGemBox(mani,span,ignore_keep){
 	        var s = mani;
 	        if(typeof(s) == 'object'){
@@ -854,7 +887,7 @@
 	        		//.show({ effect: "blind", duration: 400, direction:"left" });
 	        	$(gi).tooltip({ show: { effect: "blind", duration: 300, direction:"left" } });
 				var theel=[];
-				if(s.cmd == 'r'){
+				if(s.cmd == 'r'){ //this is a rare YotaGem!
 					$(ui).removeClass("ui-icon-cancel");
 					$(ui).addClass("ui-icon-star");
 					$(ai).removeClass("ui-icon-cancel");
@@ -872,31 +905,32 @@
 					enableViewItem(ri,s,s.npoe[7]);
 					$(gc).addClass("ui-state-active");
 				}
-				else if(s.cmd == 'c'){
-					if(s.k){
+				else if(s.cmd == 'c'){ //this is common-weight gem
+					
+					if(s.k==1){ //flagged as user-keep
 						$(uk).removeClass("ui-icon-plusthick");
 						$(uk).addClass("ui-icon-heart");
-						if(!ignore_keep){
+						if(!ignore_keep){ //this is  still not submitted, so hook up keep events
 							$(uk).attr("title","click to redeem");
 							$(uk).click({mani:s,srcElement:uk},function(event){
 								toggleKeep(event);
 							});
 						}
-						else{
+						else{ //this is ignored so they obviously kept this gem
 							$(uk).attr("title","you kept this gem");
 							$(uk).css( "cursor", "default" );
 						}
 					}
-					else{
+					else if(s.k==0) { //flagged as user-redeem
 						$(uk).removeClass("ui-icon-heart");
 						$(uk).addClass("ui-icon-plusthick");
-						if(!ignore_keep){
+						if(!ignore_keep){ //need to hook up keep events
 							$(uk).attr("title","click to keep");
 							$(uk).click({mani:s,srcElement:uk},function(event){
 								toggleKeep(event);
 							});
 						}
-						else{
+						else{ //no need to hook up events, already submitted to shaman
 							$(uk).attr("title","you redeemed this gem");
 							//$(uk).css( "cursor", "default" );
 							$(uk).removeClass("ui-icon-plusthick");
@@ -904,7 +938,8 @@
 							$(uk).addClass("ui-icon-cart");
 						}
 					}
-		       		if(s.i[0]){
+					//are any flagged as user-, app- or realm-items?
+		       		if(s.i[0]==1){ //is a user-item
 						$(ui).removeClass("ui-icon-cancel");
 						$(ui).addClass("ui-icon-star");
 						//theel.push(ui);
@@ -912,7 +947,7 @@
 						$(gc).addClass("ui-state-active");
 						$(ui).attr("itemid",s.npoe[5]);
 					}
-					if(s.i[1]){
+					if(s.i[1]==1){ //is an app-item
 						$(ai).removeClass("ui-icon-cancel");
 						$(ai).addClass("ui-icon-star");
 						//theel.push(ai);
@@ -920,7 +955,7 @@
 						$(gc).addClass("ui-state-active");
 						$(ai).attr("itemid",s.npoe[6]);
 					}
-					if(s.i[2]){
+					if(s.i[2]==1){ //is a realm-item
 						$(ri).removeClass("ui-icon-cancel");
 						$(ri).addClass("ui-icon-star");
 						//theel.push(ri);
@@ -933,24 +968,13 @@
 					$(uk).removeClass("ui-icon-check");
 					$(uk).removeClass("ui-icon");
 				}
-				/*
-				if(theel.length){
-					$(gc).addClass("ui-state-active");
-					for(var i = 0; i < theel.length; i++){
-						var thisel = theel[i];							
-						$(thisel).click(function(event){
-							alert('view item not yet implemented');
-						});
-					}
-				}
-				*/
 				
 				$(span).append(newgembox);
 				$(gc).append(imgCan);
 				
 				function toggleKeep(event){
 					var m = event.data.mani;
-					var el = event.data.srcElement || event.srcElement || event.target;
+					var el = event.data.srcElement; // || event.srcElement || event.target;
 					if(m.k==0){ //need to toggle to keep
 						m.k = 1;
 		        		$(el).addClass("ui-icon-heart");
@@ -979,7 +1003,12 @@
 				});
 			}
 	    }
-			    
+	    /////////////////////////////////////////////////////////
+	    //newspeak: invokes mespeak.js with user settings
+	    //    honors msg: || technobabble
+	    //		honors silent: || override
+	    //		alert passed in for logging and status.
+	    /////////////////////////////////////////////////////////
 		function newspeak(msg,alert,overide){
 			if(!silent.checked){
 				try{
@@ -1014,18 +1043,22 @@
 				console.log('silent: ' + msg);
 			}
 		}
+	    /////////////////////////////////////////////////////////
+	    //newstatus
+	    //    flash the banner with new user status update
+	    /////////////////////////////////////////////////////////
 		function newstatus(msg,alert){
-			//FuC< IE!!!!
+			//F< I-E!!!!
 			//i've been lucky with everything else, but can't get
-			//this message bitchy thingy to work on IE
-			//so FuC< IE
+			//this message css 3d transform to work on IE
+			//so fie
 			if(alert){
 				msg="alert: " + msg;
 				$("#statusmessage").removeClass("ui-state-highlight");
 				$("#statusmessage").addClass("ui-state-error");
 				/*if(satoshi.browserDetect.browser=="Explorer"){
 					//$("#card").addClass("flipped");
-					//$("#logomsg").html('ei kcuf');
+					//$("#logomsg").html('ei f');
 					statusmessage.innerText = msg;
 					$("#card").addClass("flipped");
 					setTimeout(
@@ -1079,11 +1112,6 @@
 			}
 		}
 
-
-
-/*function queuedPackageClick(e,imgCan,itemsspan,pkg){
-	$(imgCan).addClass(".selected");
-}*/
 
 	</script>
 	<div id="templatesdiv" style="xvisibility:hidden;width:100%;overflow-y:none;overflow-x:auto;height:80px;" class="">
